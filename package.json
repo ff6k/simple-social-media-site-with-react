@@ -1,0 +1,33 @@
+{
+	"name": "social-media-site",
+	"version": "1.0.0",
+	"description": "Social network for developers - MERN stack demonstration",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"server": "nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/briang123/Social-Media-Site.git"
+	},
+	"author": "Brian Gaines",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/briang123/Social-Media-Site/issues"
+	},
+	"homepage": "https://github.com/briang123/Social-Media-Site#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.18.3",
+		"express": "^4.16.4",
+		"jsonwebtoken": "^8.4.0",
+		"mongoose": "^5.3.15",
+		"passport": "^0.4.0",
+		"passport-jwt": "^4.0.0",
+		"validator": "^10.9.0"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.7"
+	}
+}
