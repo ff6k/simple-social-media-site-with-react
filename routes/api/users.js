@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const { messages, sender } = require('../../helpers/response');
+const { getGravatarURL } = require('./../../helpers/gravatar');
 
 // Load User model
 const User = require('../../models/User');
@@ -21,11 +21,7 @@ router.post('/register', (req, res) => {
 			return sender(res, 400, { msg: messages.auth.invalidRegistration });
 
 		const { name, email, password } = req.body;
-		const avatar = gravatar.url(email, {
-			s: '200', //size
-			r: 'pg', //rating
-			d: 'mm' //default
-		});
+		const avatar = getGravatarURL(email);
 
 		bcrypt.hash(password, 10, (err, hash) => {
 			if (err)
