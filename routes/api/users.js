@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const { messages, sender } = require('../../helpers/response');
 
 // Load User model
 const User = require('../../models/User');
@@ -16,28 +17,48 @@ router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 // @access  Public
 router.post('/register', (req, res) => {
 	User.findOne({ email: req.body.email }, (err, foundUser) => {
-		if (err) return res.status(400).jsonp({ error: err });
+		if (err || foundUser)
+			return sender(res, 400, { msg: messages.auth.invalidRegistration });
 
-		if (foundUser) {
-			return res.status(400).json({ email: 'Email already exists' });
-		} else {
-			const { name, email, password, avatar } = req.body;
+		const { name, email, password } = req.body;
+		const avatar = gravatar.url(email, {
+			s: '200', //size
+			r: 'pg', //rating
+			d: 'mm' //default
+		});
 
-			const avatarURL = gravatar.url(email, {
-				s: '200', //size
-				r: 'pg', //rating
-				d: 'mm' //default
+		bcrypt.hash(password, 10, (err, hash) => {
+			if (err)
+				return sender(res, 400, {
+					msg: messages.auth.invalidRegistration
+				});
+
+			User.create({ name, email, password: hash, avatar }, (err, newUser) => {
+				return err
+					? sender(res, 400, { msg: messages.auth.invalidRegistration })
+					: res.json(newUser);
 			});
+		});
+	});
+});
 
-			bcrypt.hash(password, 10, (err, hash) => {
-				User.create(
-					{ name, email, password: hash, avatar: avatarURL },
-					(err, newUser) => {
-						err ? console.log(err) : res.jsonp(newUser);
-					}
-				);
-			});
-		}
+// @route   GET api/users/login
+// @desc    Login User / Returning JWT Token
+// @access  Public
+router.post('/login', (req, res) => {
+	const { email, password } = req.body;
+
+	// Find user by email
+	User.findOne({ email }).then(user => {
+		// Check for user
+		if (!user) return sender(res, 400, { msg: messages.auth.error });
+
+		// Check Password
+		bcrypt.compare(password, user.password).then(isMatch => {
+			return isMatch
+				? res.json({ msg: messages.auth.success })
+				: sender(res, 400, { msg: messages.auth.error });
+		});
 	});
 });
 
