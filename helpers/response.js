@@ -21,8 +21,9 @@ module.exports = {
 		}
 	},
 	sendInternalError: res => {
-		const { internalServer } = messages.errors;
-		return res.status(internalServer.statusCode).json(internalServer.message);
+		return res
+			.status(errors.internalServer.statusCode)
+			.json(errors.internalServer.message);
 	},
 	sender: (res, statusCode, msg) => {
 		return res.status(statusCode).json(msg);
