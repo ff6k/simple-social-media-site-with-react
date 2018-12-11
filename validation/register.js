@@ -1,6 +1,5 @@
 const Validator = require('validator');
 const CoreValidation = require('./core-validation');
-//const isEmpty = require('./is-empty');
 
 const Rules = {
 	name: {
