@@ -6,8 +6,7 @@ module.exports = CoreValidation = {
 		value === null ||
 		(typeof value === 'object' && Object.keys(value).length === 0) ||
 		(typeof value === 'string' && value.trim().length === 0),
-	normalizeValue: value =>
-		value != CoreValidation.isEmpty(value) ? value : '',
+	normalizeValue: value => (!CoreValidation.isEmpty(value) ? value : ''),
 	validateRequired: (value, message) => {
 		value = CoreValidation.normalizeValue(value);
 		return Validator.isEmpty(value) ? message : '';
@@ -24,5 +23,9 @@ module.exports = CoreValidation = {
 	validateEmail: (value, message) => {
 		value = CoreValidation.normalizeValue(value);
 		return !Validator.isEmail(value) ? message : '';
+	},
+	validateURL: (value, message) => {
+		value = CoreValidation.normalizeValue(value);
+		return !Validator.isURL(value) ? message : '';
 	}
 };
