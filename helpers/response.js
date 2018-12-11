@@ -1,14 +1,28 @@
 module.exports = {
 	messages: {
+		server: {
+			internal: 'Something went wrong, please try again soon.'
+		},
 		auth: {
 			success: 'You successfully authenticated with the system.',
 			error: 'An error occurred while attempting to login.',
 			invalidRegistration:
-				'The information you specified is invalid for registration'
+				'The information you specified is invalid for registration.'
 		},
 		profile: {
-			noprofile: 'There is no profile for this user'
+			noProfile: 'No profile exists for this user.',
+			handleExists: 'That handle already exists.'
 		}
+	},
+	errors: {
+		internalServer: {
+			message: 'Something went wrong, please try again soon.',
+			statusCode: 500
+		}
+	},
+	sendInternalError: res => {
+		const { internalServer } = messages.errors;
+		return res.status(internalServer.statusCode).json(internalServer.message);
 	},
 	sender: (res, statusCode, msg) => {
 		return res.status(statusCode).json(msg);
