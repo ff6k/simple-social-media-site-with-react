@@ -5,6 +5,9 @@ module.exports = {
 			error: 'An error occurred while attempting to login.',
 			invalidRegistration:
 				'The information you specified is invalid for registration'
+		},
+		profile: {
+			noprofile: 'There is no profile for this user'
 		}
 	},
 	sender: (res, statusCode, msg) => {
