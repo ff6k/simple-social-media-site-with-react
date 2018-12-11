@@ -8,35 +8,46 @@ const { getGravatarURL } = require('./../../helpers/gravatar');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+// Validate Input
+const ValidateRegisterInput = require('../../validation/register');
+const ValidateLoginInput = require('../../validation/login');
+
 // Load User model
 const User = require('../../models/User');
-
-// @route   GET api/users/test
-// @desc    TESTS users route
-// @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 
 // @route   GET api/users/register
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
+	const { errors, isValid } = ValidateRegisterInput(req.body);
+
+	// check validation
+	if (!isValid) {
+		sender(res, 400, errors);
+	}
+
 	User.findOne({ email: req.body.email }, (err, foundUser) => {
-		if (err || foundUser)
-			return sender(res, 400, { msg: messages.auth.invalidRegistration });
+		if (err || foundUser) {
+			errors.error = messages.auth.invalidRegistration;
+			sender(res, 400, errors);
+		}
 
 		const { name, email, password } = req.body;
 		const avatar = getGravatarURL(email);
 
 		bcrypt.hash(password, 10, (err, hash) => {
-			if (err)
-				return sender(res, 400, {
-					msg: messages.auth.invalidRegistration
-				});
+			if (err) {
+				errors.error = messages.auth.invalidRegistration;
+				sender(res, 400, errors);
+			}
 
 			User.create({ name, email, password: hash, avatar }, (err, newUser) => {
-				return err
-					? sender(res, 400, { msg: messages.auth.invalidRegistration })
-					: res.json(newUser);
+				if (err) {
+					errors.error = messages.auth.invalidRegistration;
+					sender(res, 400, errors);
+				} else {
+					res.json(newUser);
+				}
 			});
 		});
 	});
@@ -46,12 +57,22 @@ router.post('/register', (req, res) => {
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
+	const { errors, isValid } = ValidateLoginInput(req.body);
+
+	// check validation
+	if (!isValid) {
+		sender(res, 400, errors);
+	}
+
 	const { email, password } = req.body;
 
 	// Find user by email
 	User.findOne({ email }).then(user => {
 		// Check for user
-		if (!user) return sender(res, 400, { msg: messages.auth.error });
+		if (!user) {
+			errors.error = messages.auth.error;
+			sender(res, 400, errors);
+		}
 
 		// Check Password
 		bcrypt.compare(password, user.password).then(isMatch => {
@@ -69,8 +90,10 @@ router.post('/login', (req, res) => {
 					keys.secretOrKey,
 					{ expiresIn: 3600 },
 					(err, token) => {
-						if (err) sender(res, 400, { msg: messages.auth.error });
-
+						if (err) {
+							errors.error = messages.auth.error;
+							sender(res, 400, errors);
+						}
 						res.json({
 							success: true,
 							token: 'Bearer ' + token
@@ -78,7 +101,8 @@ router.post('/login', (req, res) => {
 					}
 				);
 			} else {
-				sender(res, 400, { msg: messages.auth.error });
+				errors.error = messages.auth.error;
+				sender(res, 400, errors);
 			}
 		});
 	});
