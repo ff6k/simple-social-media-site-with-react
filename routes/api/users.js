@@ -3,7 +3,11 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { messages, sender } = require('../../helpers/response');
+const {
+	messages,
+	sender,
+	sendInternalError
+} = require('../../helpers/response');
 const { getGravatarURL } = require('./../../helpers/gravatar');
 const keys = require('../../config/keys');
 const passport = require('passport');
