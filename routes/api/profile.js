@@ -5,8 +5,8 @@ const passport = require('passport');
 
 const {
 	messages,
-	sender
-	//sendInternalError
+	sender,
+	sendInternalError
 } = require('../../helpers/response');
 
 const CoreValidation = require('../../validation/core-validation');
@@ -27,20 +27,85 @@ router.get(
 	'/',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		const { errors, isValid } = ValidateProfileInput(req.body);
+		const errors = {};
 
 		Profile.findOne({ user: req.user.id })
+			.populate('user', ['name', 'avatar'])
 			.then(profile => {
 				if (!profile) {
-					errors.noProfile = messages.profile.noProfile;
+					errors.profile = messages.profile.noProfile;
 					return sender(res, 404, errors);
-				} else {
-					res.json(profile);
 				}
+				res.json(profile);
 			})
-			.catch(err => res.status(500).json(err));
+			.catch(err => {
+				errors.profile = messages.profile.noProfile;
+				return sender(res, 404, errors);
+			});
 	}
 );
+
+// @route   GET api/profile/all
+// @desc    Get all profiles
+// @access  Public
+router.get('/all', (req, res) => {
+	const errors = {};
+
+	Profile.find()
+		.populate('user', ['name', 'avatar'])
+		.then(profiles => {
+			if (!profiles) {
+				errors.profile = 'There are no profiles';
+				return sender(res, 404, errors);
+			}
+			res.json(profiles);
+		})
+		.catch(err => {
+			errors.profile = 'There are no profiles';
+			return sender(res, 404, errors);
+		});
+});
+
+// @route   GET api/profile/handle/:handle
+// @desc    Get profile by handle
+// @access  Public
+router.get('/handle/:handle', (req, res) => {
+	const errors = {};
+	Profile.findOne({ handle: req.params.handle })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				errors.profile = messages.profile.noProfile;
+				return sender(res, 404, errors);
+			}
+			res.json(profile);
+		})
+		.catch(err => {
+			errors.profile = messages.profile.noProfile;
+			return sender(res, 404, errors);
+		});
+});
+
+// @route   GET api/profile/user/:user_id
+// @desc    Get profile by user id
+// @access  Public
+router.get('/user/:user_id', (req, res) => {
+	const errors = {};
+
+	Profile.findOne({ user: req.params.user_id })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				errors.profile = messages.profile.noProfile;
+				return sender(res, 404, errors);
+			}
+			res.json(profile);
+		})
+		.catch(err => {
+			errors.profile = messages.profile.noProfile;
+			return sender(res, 404, err);
+		});
+});
 
 // @route   POST api/profile
 // @desc    Create user profile
@@ -100,23 +165,41 @@ router.post(
 				errors.handle = messages.profile.handleExists;
 				return sender(res, 400, errors);
 			} else {
-				Profile.findOne({ user: req.user.id }).then(profile => {
-					// Update Profile
-					if (profile) {
-						Profile.findOneAndUpdate(
-							{ user: req.user.id },
-							{ $set: profileFields },
-							{ new: true }
-						).then(profile => {
-							res.json(profile);
-						});
-					} else {
-						// Create Profile
-						new Profile(profileFields).save().then(profile => {
-							res.json(profile);
-						});
-					}
-				});
+				Profile.findOne({ user: req.user.id })
+					.then(profile => {
+						// Update Profile
+						if (profile) {
+							Profile.findOneAndUpdate(
+								{ user: req.user.id },
+								{ $set: profileFields },
+								{ new: true }
+							)
+								.then(profile => {
+									res.json(profile);
+								})
+								.catch(err => {
+									errors.profile =
+										'An error occurred while trying to update the profile';
+									return sender(res, 404, errors);
+								});
+						} else {
+							// Create Profile
+							new Profile(profileFields)
+								.save()
+								.then(profile => {
+									res.json(profile);
+								})
+								.catch(err => {
+									errors.profile =
+										'An error occurred while trying to create the profile';
+									return sender(res, 404, errors);
+								});
+						}
+					})
+					.catch(err => {
+						errors.profile = messages.profile.noProfile;
+						return sender(res, 404, errors);
+					});
 			}
 		});
 	}
