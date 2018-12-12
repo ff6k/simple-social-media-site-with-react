@@ -16,7 +16,7 @@ module.exports = {
 	},
 	errors: {
 		internalServer: {
-			message: 'Something went wrong, please try again soon.',
+			message: { server: 'Something went wrong, please try again soon.' },
 			statusCode: 500
 		}
 	},
