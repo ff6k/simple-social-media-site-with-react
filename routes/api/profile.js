@@ -19,6 +19,8 @@ const User = require('../../models/User');
 
 // Validate Input
 const ValidateProfileInput = require('../../validation/profile');
+const ValidateExperienceInput = require('../../validation/experience');
+const ValidateEducationInput = require('../../validation/education');
 
 // @route   GET api/profile
 // @desc    Get current user's profile
@@ -201,6 +203,52 @@ router.post(
 						return sender(res, 404, errors);
 					});
 			}
+		});
+	}
+);
+
+// @route   POST api/profile/experience
+// @desc    Add experience to profile
+// @access  Private
+router.post(
+	'/experience',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		const { errors, isValid } = ValidateExperienceInput(req.body);
+
+		// check validation
+		if (!isValid) {
+			return sender(res, 400, errors);
+		}
+
+		Profile.findOne({ user: req.user.id }).then(profile => {
+			const newExp = req.body;
+			//Add to experience array
+			profile.experience.unshift(newExp);
+			profile.save().then(profile => res.json(profile));
+		});
+	}
+);
+
+// @route   POST api/profile/education
+// @desc    Add education to profile
+// @access  Private
+router.post(
+	'/education',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		const { errors, isValid } = ValidateEducationInput(req.body);
+
+		// check validation
+		if (!isValid) {
+			return sender(res, 400, errors);
+		}
+
+		Profile.findOne({ user: req.user.id }).then(profile => {
+			const newEdu = req.body;
+			//Add to education array
+			profile.education.unshift(newEdu);
+			profile.save().then(profile => res.json(profile));
 		});
 	}
 );
