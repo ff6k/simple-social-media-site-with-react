@@ -27,13 +27,13 @@ router.post('/register', (req, res) => {
 
 	// check validation
 	if (!isValid) {
-		sender(res, 400, errors);
+		return sender(res, 400, errors);
 	}
 
 	User.findOne({ email: req.body.email }, (err, foundUser) => {
 		if (err || foundUser) {
 			errors.error = messages.auth.invalidRegistration;
-			sender(res, 400, errors);
+			return sender(res, 400, errors);
 		}
 
 		const { name, email, password } = req.body;
@@ -42,13 +42,13 @@ router.post('/register', (req, res) => {
 		bcrypt.hash(password, 10, (err, hash) => {
 			if (err) {
 				errors.error = messages.auth.invalidRegistration;
-				sender(res, 400, errors);
+				return sender(res, 400, errors);
 			}
 
 			User.create({ name, email, password: hash, avatar }, (err, newUser) => {
 				if (err) {
 					errors.error = messages.auth.invalidRegistration;
-					sender(res, 400, errors);
+					return sender(res, 400, errors);
 				} else {
 					res.json(newUser);
 				}
@@ -65,7 +65,7 @@ router.post('/login', (req, res) => {
 
 	// check validation
 	if (!isValid) {
-		sender(res, 400, errors);
+		return sender(res, 400, errors);
 	}
 
 	const { email, password } = req.body;
@@ -75,7 +75,7 @@ router.post('/login', (req, res) => {
 		// Check for user
 		if (!user) {
 			errors.error = messages.auth.error;
-			sender(res, 400, errors);
+			return sender(res, 400, errors);
 		}
 
 		// Check Password
@@ -96,7 +96,7 @@ router.post('/login', (req, res) => {
 					(err, token) => {
 						if (err) {
 							errors.error = messages.auth.error;
-							sender(res, 400, errors);
+							return sender(res, 400, errors);
 						}
 						res.json({
 							success: true,
@@ -106,7 +106,7 @@ router.post('/login', (req, res) => {
 				);
 			} else {
 				errors.error = messages.auth.error;
-				sender(res, 400, errors);
+				return sender(res, 400, errors);
 			}
 		});
 	});

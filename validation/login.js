@@ -3,6 +3,7 @@ const CoreValidation = require('./core-validation');
 
 module.exports = ValidateLoginInput = data => {
 	let errors = {};
+	const { email, password } = data;
 
 	setErrorObject = (field, message) => {
 		if (!CoreValidation.isEmpty(message)) errors[field] = message;
@@ -11,18 +12,18 @@ module.exports = ValidateLoginInput = data => {
 	// Validate Email
 	setErrorObject(
 		'email',
-		CoreValidation.validateEmail(data.email, 'Email is invalid')
+		CoreValidation.validateEmail(email, 'Email is invalid')
 	);
 
 	setErrorObject(
 		'email',
-		CoreValidation.validateRequired(data.email, 'Email is required')
+		CoreValidation.validateRequired(email, 'Email is required')
 	);
 
 	// Validate Password
 	setErrorObject(
 		'password',
-		CoreValidation.validateRequired(data.password, 'Password is required')
+		CoreValidation.validateRequired(password, 'Password is required')
 	);
 
 	return {

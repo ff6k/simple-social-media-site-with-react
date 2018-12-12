@@ -20,12 +20,9 @@ module.exports = {
 			statusCode: 500
 		}
 	},
-	sendInternalError: res => {
-		return res
+	sendInternalError: res =>
+		res
 			.status(errors.internalServer.statusCode)
-			.json(errors.internalServer.message);
-	},
-	sender: (res, statusCode, msg) => {
-		return res.status(statusCode).json(msg);
-	}
+			.json(errors.internalServer.message),
+	sender: (res, statusCode, msg) => res.status(statusCode).json(msg)
 };

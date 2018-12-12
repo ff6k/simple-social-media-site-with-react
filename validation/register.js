@@ -15,6 +15,8 @@ const Rules = {
 module.exports = ValidateRegisterInput = data => {
 	let errors = {};
 
+	const { name, email, password, password2 } = data;
+
 	setErrorObject = (field, message) => {
 		if (!CoreValidation.isEmpty(message)) errors[field] = message;
 	};
@@ -23,7 +25,7 @@ module.exports = ValidateRegisterInput = data => {
 	setErrorObject(
 		'name',
 		CoreValidation.validateLengthRange(
-			data.name,
+			name,
 			Rules.name.min,
 			Rules.name.max,
 			`Name must be between ${Rules.name.min} and ${Rules.name.max} characters`
@@ -32,30 +34,30 @@ module.exports = ValidateRegisterInput = data => {
 
 	setErrorObject(
 		'name',
-		CoreValidation.validateRequired(data.name, 'Name is required')
+		CoreValidation.validateRequired(name, 'Name is required')
 	);
 
 	// Validate Email
 	setErrorObject(
 		'email',
-		CoreValidation.validateRequired(data.email, 'Email is required')
+		CoreValidation.validateRequired(email, 'Email is required')
 	);
 
 	setErrorObject(
 		'email',
-		CoreValidation.validateEmail(data.email, 'Email is invalid')
+		CoreValidation.validateEmail(email, 'Email is invalid')
 	);
 
 	// Validate Password
 	setErrorObject(
 		'password',
-		CoreValidation.validateRequired(data.password, 'Password is required')
+		CoreValidation.validateRequired(password, 'Password is required')
 	);
 
 	setErrorObject(
 		'password',
 		CoreValidation.validateLengthRange(
-			data.password,
+			password,
 			Rules.password.min,
 			Rules.password.max,
 			`Password must be at least ${Rules.password.min} characters`
@@ -66,7 +68,7 @@ module.exports = ValidateRegisterInput = data => {
 	setErrorObject(
 		'password2',
 		CoreValidation.validateRequired(
-			data.password2,
+			password2,
 			'Confirm Password field is required'
 		)
 	);
@@ -74,8 +76,8 @@ module.exports = ValidateRegisterInput = data => {
 	setErrorObject(
 		'password2',
 		CoreValidation.validateValueMatch(
-			data.password,
-			data.password2,
+			password,
+			password2,
 			'Passwords must match'
 		)
 	);

@@ -5,8 +5,8 @@ const passport = require('passport');
 
 const {
 	messages,
-	sender,
-	sendInternalError
+	sender
+	//sendInternalError
 } = require('../../helpers/response');
 
 const CoreValidation = require('../../validation/core-validation');
@@ -32,13 +32,13 @@ router.get(
 		Profile.findOne({ user: req.user.id })
 			.then(profile => {
 				if (!profile) {
-					errors.noprofile = messages.profile.noprofile;
-					sender(res, 404, errors);
+					errors.noProfile = messages.profile.noProfile;
+					return sender(res, 404, errors);
 				} else {
 					res.json(profile);
 				}
 			})
-			.catch(err => sendInternalError(res));
+			.catch(err => res.status(500).json(err));
 	}
 );
 
@@ -53,7 +53,7 @@ router.post(
 
 		// check validation
 		if (!isValid) {
-			sender(res, 400, errors);
+			return sender(res, 400, errors);
 		}
 
 		// Load Profile with Request
@@ -80,7 +80,9 @@ router.post(
 
 		standardFields.forEach(field => {
 			if (field === 'skills' && !CoreValidation.isEmpty(req.body.skills)) {
-				profileFields.skills = req.body.skills.split(',');
+				profileFields.skills = req.body.skills
+					.split(',')
+					.map(item => item.trim());
 			} else {
 				if (req.body[field]) profileFields[field] = req.body[field];
 			}
@@ -96,7 +98,7 @@ router.post(
 			// Check if handle exists
 			if (profile && profile.user != req.user.id) {
 				errors.handle = messages.profile.handleExists;
-				sender(res, 400, errors);
+				return sender(res, 400, errors);
 			} else {
 				Profile.findOne({ user: req.user.id }).then(profile => {
 					// Update Profile

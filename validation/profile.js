@@ -9,8 +9,8 @@ const Rules = {
 };
 
 module.exports = ValidateProfileInput = data => {
-	let errors = {},
-		{
+	let errors = {};
+	const {
 			handle,
 			status,
 			skills,
