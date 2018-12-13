@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 //const mongoose = require('mongoose');
 const passport = require('passport');
-const passportAuth = passport.authenticate('jwt', { session: false });
+const requireLogin = passport.authenticate('jwt', { session: false });
 
 const { messages, sender } = require('../../helpers/response');
 
@@ -24,7 +24,7 @@ const routeAction = require('./route-actions');
 // @route   GET api/profile
 // @desc    Get current user's profile
 // @access  Private
-router.get('/', passportAuth, (req, res) => {
+router.get('/', requireLogin, (req, res) => {
 	routeAction.findProfile({ user: req.user.id }, res);
 });
 
@@ -50,7 +50,7 @@ router.get('/user/:user_id', (req, res) =>
 // @route   POST api/profile
 // @desc    Create user profile
 // @access  Private
-router.post('/', passportAuth, (req, res) => {
+router.post('/', requireLogin, (req, res) => {
 	const { errors, isValid } = ValidateProfileInput(req.body);
 
 	// check validation
@@ -138,7 +138,7 @@ router.post('/', passportAuth, (req, res) => {
 // @route   POST api/profile/experience
 // @desc    Add experience to profile
 // @access  Private
-router.post('/experience', passportAuth, (req, res) => {
+router.post('/experience', requireLogin, (req, res) => {
 	const { errors, isValid } = ValidateExperienceInput(req.body);
 
 	// check validation
@@ -186,7 +186,7 @@ router.post(
 // @route   DELETE api/profile/experience/:exp_id
 // @desc    Delete experience from profile
 // @access  Private
-router.delete('/experience/:exp_id', passportAuth, (req, res) => {
+router.delete('/experience/:exp_id', requireLogin, (req, res) => {
 	const user = { user: req.user.id },
 		expId = req.params.exp_id;
 
@@ -200,7 +200,7 @@ router.delete('/experience/:exp_id', passportAuth, (req, res) => {
 // @route   DELETE api/profile/education/:edu_id
 // @desc    Delete education from profile
 // @access  Private
-router.delete('/education/:edu_id', passportAuth, (req, res) => {
+router.delete('/education/:edu_id', requireLogin, (req, res) => {
 	const user = { user: req.user.id },
 		eduId = req.params.edu_id;
 
@@ -214,25 +214,30 @@ router.delete('/education/:edu_id', passportAuth, (req, res) => {
 // @route   DELETE api/profile
 // @desc    Delete user from profile
 // @access  Private
-router.delete('/', passportAuth, (req, res) => {
+router.delete('/', requireLogin, (req, res) => {
 	Profile.findOneAndRemove({ user: req.user.id })
-		.then(() => {
+		.then(profile => {
 			User.findOneAndRemove({ _id: req.user.id })
-				.then(() => res.json({ success: true }))
+				.then(user =>
+					res.json({
+						message:
+							'Successfully deleted user' + (profile ? ' and profile.' : '.'),
+						name: user.name,
+						email: user.email,
+						userId: user.id,
+						profileId: profile ? profile.id : null
+					})
+				)
 				.catch(err =>
-					res
-						.status(404)
-						.json({
-							error: 'An error occurred while attempting to delete the user'
-						})
+					res.status(404).json({
+						error: 'An error occurred while attempting to delete the user'
+					})
 				);
 		})
 		.catch(err =>
-			res
-				.status(404)
-				.json({
-					error: 'An error occurred while attempting to delete the user profile'
-				})
+			res.status(404).json({
+				error: 'An error occurred while attempting to delete the user profile'
+			})
 		);
 });
 
