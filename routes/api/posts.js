@@ -1,9 +1,109 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const passport = require('passport');
+const requireLogin = passport.authenticate('jwt', { session: false });
 
-// @route   GET api/posts/test
-// @desc    TESTS posts route
+const { messages, sender } = require('../../helpers/response');
+
+// Profile/Post model
+const Profile = require('../../models/Profile');
+const Post = require('../../models/Post');
+
+// Validation
+const ValidatePostInput = require('../../validation/post');
+
+// @route   GET api/posts
+// @desc    Get posts
 // @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Posts works' }));
+router.get('/', (req, res) => {
+	Post.find()
+		.sort({ date: -1 })
+		.then(posts => res.json(posts))
+		.catch(err => sender(res, 404, { posts: 'No posts found' }));
+});
+
+// @route   GET api/post/:id
+// @desc    Get post by id
+// @access  Public
+router.get('/:id', (req, res) => {
+	Post.findById(req.params.id)
+		.then(post => {
+			if (!post) {
+				return sender(res, 404, {
+					posts: 'Post not found for that ID',
+					postId: req.params.id
+				});
+			}
+
+			res.json(post);
+		})
+		.catch(err =>
+			sender(res, 404, {
+				posts: 'Post not found for that ID',
+				postId: req.params.id
+			})
+		);
+});
+
+// @route   POST api/posts
+// @desc    Create post
+// @access  Private
+router.post('/', requireLogin, (req, res) => {
+	const { errors, isValid } = ValidatePostInput(req.body);
+
+	if (!isValid) {
+		return sender(res, 400, errors);
+	}
+
+	const newPost = new Post({
+		text: req.body.text,
+		name: req.user.name,
+		avatar: req.user.avatar,
+		user: req.user.id
+	});
+
+	newPost.save().then(post => res.json(post));
+});
+
+// @route   DELETE api/posts/:id
+// @desc    Delete post
+// @access  Private
+router.delete('/:id', requireLogin, (req, res) => {
+	Post.findById(req.params.id)
+		.then(post => {
+			//Check for post owner
+			if (post.user.toString() !== req.user.id) {
+				return sender(res, 401, { error: 'User not authorized' });
+			}
+
+			post
+				.remove()
+				.then(() => {
+					res.json({
+						message: 'Successfully deleted post.',
+						name: req.user.name,
+						userId: req.user.id,
+						postId: post.id
+					});
+				})
+				.catch(err => {
+					sender(res, 404, {
+						message: 'The post was not found to delete.',
+						name: req.user.name,
+						userId: req.user.id,
+						postId: req.params.id
+					});
+				});
+		})
+		.catch(err =>
+			sender(res, 404, {
+				message: 'The post was not found to delete.',
+				name: req.user.name,
+				userId: req.user.id,
+				postId: req.params.id
+			})
+		);
+});
 
 module.exports = router;
