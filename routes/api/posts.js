@@ -110,66 +110,144 @@ router.delete('/:id', requireLogin, (req, res) => {
 // @desc    Like post
 // @access  Private
 router.post('/like/:id', requireLogin, (req, res) => {
-	Profile.findOne({ user: req.user.id }).then(profile => {
-		Post.findById(req.params.id)
-			.then(post => {
-				if (
-					post.likes.filter(like => like.user.toString() === req.user.id)
-						.length > 0
-				) {
-					return sender(res, 400, { error: 'User already liked this post' });
-				}
+	//Profile.findOne({ user: req.user.id }).then(profile => {
+	Post.findById(req.params.id)
+		.then(post => {
+			if (
+				post.likes.filter(like => like.user.toString() === req.user.id).length >
+				0
+			) {
+				return sender(res, 400, { error: 'User already liked this post' });
+			}
 
-				post.likes.unshift({ user: req.user.id });
-				post.save().then(post => res.json(post));
+			post.likes.unshift({ user: req.user.id });
+			post.save().then(post => res.json(post));
+		})
+		.catch(err =>
+			sender(res, 404, {
+				message: 'The post was not found to like.',
+				name: req.user.name,
+				userId: req.user.id,
+				postId: req.params.id,
+				error: err
 			})
-			.catch(err =>
-				sender(res, 404, {
-					message: 'The post was not found to like.',
-					name: req.user.name,
-					userId: req.user.id,
-					postId: req.params.id,
-					error: err
-				})
-			);
-	});
+		);
+	//});
 });
 
 // @route   POST api/posts/unlike/:id
 // @desc    Unlike post
 // @access  Private
 router.post('/unlike/:id', requireLogin, (req, res) => {
-	Profile.findOne({ user: req.user.id }).then(profile => {
-		Post.findById(req.params.id)
-			.then(post => {
-				if (
-					post.likes.filter(like => like.user.toString() === req.user.id)
-						.length === 0
-				) {
-					return sender(res, 400, {
-						message: 'You have not yet liked this post'
-					});
-				}
+	//Profile.findOne({ user: req.user.id }).then(profile => {
 
-				//Get remove index
-				const removeIndex = post.likes
-					.map(item => item.user.toString())
-					.indexOf(req.user.id);
+	Post.findById(req.params.id)
+		.then(post => {
+			console.log('postId: ', post.id);
 
-				//Splice out of array
-				post.likes.splice(removeIndex, 1);
-				post.save().then(post => res.json(post));
+			if (
+				post.likes.filter(like => like.user.toString() === req.user.id)
+					.length === 0
+			) {
+				return sender(res, 400, {
+					message: 'You have not yet liked this post'
+				});
+			}
+
+			//Get remove index
+			const removeIndex = post.likes
+				.map(item => item.user.toString())
+				.indexOf(req.user.id);
+
+			//Splice out of array
+			post.likes.splice(removeIndex, 1);
+			post.save().then(post => res.json(post));
+		})
+		.catch(err =>
+			sender(res, 404, {
+				message: 'The post was not found to unlike.',
+				name: req.user.name,
+				userId: req.user.id,
+				postId: req.params.id,
+				err
 			})
-			.catch(err =>
-				sender(res, 404, {
-					message: 'The post was not found to like.',
+		);
+	//});
+});
+
+// @route   POST api/posts/comment/:id
+// @desc    Add comment to post
+// @access  Private
+router.post('/comment/:id', requireLogin, (req, res) => {
+	const { errors, isValid } = ValidatePostInput(req.body);
+
+	if (!isValid) {
+		return sender(res, 400, errors);
+	}
+
+	Post.findById(req.params.id)
+		.then(post => {
+			const newComment = {
+				text: req.body.text,
+				name: req.user.name,
+				avatar: req.user.avatar,
+				user: req.user.id
+			};
+			post.comments.unshift(newComment);
+
+			post.save().then(post => res.json(post));
+		})
+		.catch(err =>
+			sender(res, 404, {
+				message: 'The post was not found to comment on.',
+				name: req.user.name,
+				userId: req.user.id,
+				postId: req.params.id
+			})
+		);
+});
+
+// @route   DELETE api/posts/comment/:id/:comment_id
+// @desc    Delete comment from post
+// @access  Private
+router.delete('/:id/comment/:comment_id', requireLogin, (req, res) => {
+	Post.findById(req.params.id)
+		.then(post => {
+			if (
+				post.comments.filter(
+					comment => comment._id.toString() === req.params.comment_id
+				).length === 0
+			) {
+				return sender(res, 404, {
+					error: 'Comment does not exist',
 					name: req.user.name,
 					userId: req.user.id,
 					postId: req.params.id,
-					error: err
-				})
-			);
-	});
+					commentId: req.params.comment_id
+				});
+			}
+
+			const removeIndex = post.comments
+				.map(comment => comment._id.toString())
+				.indexOf(req.params.comment_id);
+
+			if (req.user.id !== post.comments[removeIndex].user.toString()) {
+				return sender(res, 401, { error: 'User not Authorized' });
+			}
+
+			post.comments.splice(removeIndex, 1);
+
+			post.save().then(post => res.json(post));
+		})
+		.catch(err =>
+			sender(res, 404, {
+				message: 'The post was not found.',
+				name: req.user.name,
+				userId: req.user.id,
+				postId: req.params.id,
+				commentId: req.params.comment_id
+			})
+		);
 });
 
 module.exports = router;
