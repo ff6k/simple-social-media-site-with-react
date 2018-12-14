@@ -207,7 +207,7 @@ router.post('/comment/:id', requireLogin, (req, res) => {
 		);
 });
 
-// @route   DELETE api/posts/comment/:id/:comment_id
+// @route   DELETE api/posts/:id/comment/:comment_id
 // @desc    Delete comment from post
 // @access  Private
 router.delete('/:id/comment/:comment_id', requireLogin, (req, res) => {
@@ -237,7 +237,7 @@ router.delete('/:id/comment/:comment_id', requireLogin, (req, res) => {
 
 			post.comments.splice(removeIndex, 1);
 
-			post.save().then(post => res.json(post));
+			post.save().then(post => sender(res, 204, post));
 		})
 		.catch(err =>
 			sender(res, 404, {

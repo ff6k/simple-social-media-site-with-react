@@ -160,28 +160,24 @@ router.post('/experience', requireLogin, (req, res) => {
 // @route   POST api/profile/education
 // @desc    Add education to profile
 // @access  Private
-router.post(
-	'/education',
-	passport.authenticate('jwt', { session: false }),
-	(req, res) => {
-		const { errors, isValid } = ValidateEducationInput(req.body);
+router.post('/education', requireLogin, (req, res) => {
+	const { errors, isValid } = ValidateEducationInput(req.body);
 
-		// check validation
-		if (!isValid) {
-			return sender(res, 400, errors);
-		}
-
-		const education = req.body,
-			user = { user: req.user.id };
-
-		routeAction
-			.addToArray(Profile, user, 'education', education, res)
-			.catch(err => {
-				errors.error = messages.profile.noProfile;
-				sender(res, 404, errors);
-			});
+	// check validation
+	if (!isValid) {
+		return sender(res, 400, errors);
 	}
-);
+
+	const education = req.body,
+		user = { user: req.user.id };
+
+	routeAction
+		.addToArray(Profile, user, 'education', education, res)
+		.catch(err => {
+			errors.error = messages.profile.noProfile;
+			sender(res, 404, errors);
+		});
+});
 
 // @route   DELETE api/profile/experience/:exp_id
 // @desc    Delete experience from profile
