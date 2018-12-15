@@ -37,15 +37,15 @@ module.exports = ValidateRegisterInput = data => {
 		CoreValidation.validateRequired(name, 'Name is required')
 	);
 
+	setErrorObject(
+		'email',
+		CoreValidation.validateEmail(email, 'Email is invalid')
+	);
+
 	// Validate Email
 	setErrorObject(
 		'email',
 		CoreValidation.validateRequired(email, 'Email is required')
-	);
-
-	setErrorObject(
-		'email',
-		CoreValidation.validateEmail(email, 'Email is invalid')
 	);
 
 	// Validate Password
