@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import InvalidField from '../InvalidField';
+import { connect } from 'react-redux';
+import { registerUser } from './../../actions/authActions';
 
 class Register extends Component {
 	state = {
@@ -23,14 +26,25 @@ class Register extends Component {
 			...this.state
 		};
 
-		axios
-			.post('/api/users/register', newUser)
-			.then(res => console.log(res.data))
-			.catch(err => this.setState({ errors: err.response.data }));
+		this.props.registerUser(newUser, this.props.history);
 	};
+
+	static getDerivedStateFromProps(nextProps, prevProps) {
+		if (nextProps.errors) {
+			return { errors: nextProps.errors };
+		}
+		return null;
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.errors !== this.props.errors) {
+			this.setState({ errors: this.props.errors });
+		}
+	}
 
 	render() {
 		const { errors } = this.state;
+
 		return (
 			<div className="register">
 				<div className="container">
@@ -110,4 +124,19 @@ class Register extends Component {
 		);
 	}
 }
-export default Register;
+
+Register.propTypes = {
+	registerUser: PropTypes.func.isRequired,
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	auth: state.auth,
+	errors: state.errors
+});
+
+export default connect(
+	mapStateToProps,
+	{ registerUser }
+)(withRouter(Register));
