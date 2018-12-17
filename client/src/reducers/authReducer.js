@@ -11,7 +11,8 @@ export default (state = initialState, action) => {
 		case SET_CURRENT_USER:
 			return {
 				...state,
-				isAuthenticated: !CoreValidation.isEmpty(action.payload)
+				isAuthenticated: !CoreValidation.isEmpty(action.payload),
+				user: action.payload
 			};
 		default:
 			return state;
