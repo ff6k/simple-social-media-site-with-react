@@ -1,3 +1,5 @@
+This developer social media site is a demo app created and taught by Brad Traversy [found here](https://github.com/bradtraversy/devconnector)
+
 # Social Media Website
 
 > Small social network app built with the MERN stack.
