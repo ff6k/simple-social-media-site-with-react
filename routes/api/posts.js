@@ -143,8 +143,6 @@ router.post('/unlike/:id', requireLogin, (req, res) => {
 
 	Post.findById(req.params.id)
 		.then(post => {
-			console.log('postId: ', post.id);
-
 			if (
 				post.likes.filter(like => like.user.toString() === req.user.id)
 					.length === 0

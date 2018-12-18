@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import InvalidField from '../InvalidField';
 import { connect } from 'react-redux';
 import { registerUser } from './../../actions/authActions';
+import TextFieldGroup from './../common/TextFieldGroup';
 
 class Register extends Component {
 	state = {
@@ -63,76 +62,52 @@ class Register extends Component {
 								Create your DevConnector account
 							</p>
 							<form noValidate onSubmit={this.onSubmit}>
-								<div className="form-group">
-									<input
-										type="text"
-										className={classnames('form-control form-control-lg', {
-											'is-invalid': errors.name
-										})}
-										placeholder="Name"
-										name="name"
-										autoComplete="name"
-										minLength="2"
-										maxLength="30"
-										value={this.state.name}
-										onChange={this.onChange}
-									/>
-									{errors.name && <InvalidField message={errors.name} />}
-								</div>
-								<div className="form-group">
-									<input
-										type="email"
-										className={classnames('form-control form-control-lg', {
-											'is-invalid': errors.email
-										})}
-										placeholder="Email Address"
-										name="email"
-										autoComplete="email"
-										value={this.state.email}
-										onChange={this.onChange}
-									/>
-									{errors.email && <InvalidField message={errors.email} />}
-									<small className="form-text text-muted">
-										This site uses Gravatar so if you want a profile image, use
-										a Gravatar email
-									</small>
-								</div>
-								<div className="form-group">
-									<input
-										type="password"
-										className={classnames('form-control form-control-lg', {
-											'is-invalid': errors.password
-										})}
-										placeholder="Password"
-										name="password"
-										autoComplete="current-password"
-										minLength="6"
-										maxLength="30"
-										value={this.state.password}
-										onChange={this.onChange}
-									/>
-									{errors.password && (
-										<InvalidField message={errors.password} />
-									)}
-								</div>
-								<div className="form-group">
-									<input
-										type="password"
-										className={classnames('form-control form-control-lg', {
-											'is-invalid': errors.password2
-										})}
-										placeholder="Confirm Password"
-										name="password2"
-										autoComplete="current-password"
-										minLength="6"
-										maxLength="30"
-										value={this.state.password2}
-										onChange={this.onChange}
-									/>
-									{errors.password2 && (
-										<InvalidField message={errors.password2} />
-									)}
-								</div>
+								<TextFieldGroup
+									placeholder="Name"
+									name="name"
+									autoComplete="name"
+									minLength="2"
+									maxLength="30"
+									value={this.state.name}
+									onChange={this.onChange}
+									error={errors.name}
+								/>
+								<TextFieldGroup
+									type="email"
+									placeholder="Email Address"
+									name="email"
+									autoComplete="email"
+									value={this.state.email}
+									onChange={this.onChange}
+									error={errors.email}
+									info="This site uses Gravatar so if you want a profile image, use
+										a Gravatar email"
+								/>
+								<TextFieldGroup
+									type="password"
+									placeholder="Password"
+									name="password"
+									autoComplete="current-password"
+									minLength="6"
+									maxLength="30"
+									value={this.state.password}
+									onChange={this.onChange}
+									error={errors.password}
+								/>
+								<TextFieldGroup
+									type="password"
+									placeholder="Confirm Password"
+									name="password2"
+									autoComplete="current-password"
+									minLength="6"
+									maxLength="30"
+									value={this.state.password2}
+									onChange={this.onChange}
+									error={errors.password2}
+								/>
+								{errors.error && (
+									<div style={{ color: 'red' }}>{errors.error}</div>
+								)}
 								<input type="submit" className="btn btn-info btn-block mt-4" />
 							</form>
 						</div>

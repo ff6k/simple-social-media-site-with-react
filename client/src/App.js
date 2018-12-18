@@ -15,7 +15,6 @@ import './App.css';
 
 const authTokenExpired = expireDate => {
 	const currentTime = Date.now() / 1000;
-	console.log('currentTime > expireDate: ', currentTime > expireDate);
 	return currentTime > expireDate;
 };
 
