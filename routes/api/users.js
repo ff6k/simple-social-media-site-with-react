@@ -92,7 +92,7 @@ router.post('/login', (req, res) => {
 				jwt.sign(
 					payload,
 					keys.secretOrKey,
-					{ expiresIn: 86400 }, // 1 day
+					{ expiresIn: 3600 }, // 1 day 86400
 					(err, token) => {
 						if (err) {
 							errors.error = messages.auth.error;

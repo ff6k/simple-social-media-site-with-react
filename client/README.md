@@ -1,3 +1,5 @@
+This developer social media site is a demo app created and taught by Brad Traversy [found here](https://github.com/bradtraversy/devconnector)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
