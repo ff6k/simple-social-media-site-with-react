@@ -54,7 +54,6 @@ export const clearErrors = () => dispatch => {
 
 //log user out
 export const logoutUser = () => dispatch => {
-	
 	//remove token from localstorage
 	localStorage.removeItem('jwtToken');
 
