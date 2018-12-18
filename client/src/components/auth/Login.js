@@ -68,12 +68,13 @@ class Login extends Component {
 							<form onSubmit={this.onSubmit}>
 								<div className="form-group">
 									<input
-										type="error"
+										type="email"
 										className={classnames('form-control form-control-lg', {
 											'is-invalid': errors.email
 										})}
 										placeholder="Email Address"
 										name="email"
+										autoComplete="email"
 										value={this.state.email}
 										onChange={this.onChange}
 									/>
@@ -87,6 +88,9 @@ class Login extends Component {
 										})}
 										placeholder="Password"
 										name="password"
+										autoComplete="current-password"
+										minLength="6"
+										maxLength="30"
 										value={this.state.password}
 										onChange={this.onChange}
 									/>

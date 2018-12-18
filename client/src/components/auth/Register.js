@@ -37,14 +37,16 @@ class Register extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.errors !== this.props.errors) {
-			this.setState({ errors: this.props.errors });
+		const { errors } = this.props;
+		if (prevProps.errors !== errors) {
+			this.setState({ errors });
 		}
 	}
 
 	componentDidMount() {
-		if (this.props.auth.isAuthenticated) {
-			this.props.history.push('/dashboard');
+		const { auth, history } = this.props;
+		if (auth.isAuthenticated) {
+			history.push('/dashboard');
 		}
 	}
 
@@ -69,6 +71,9 @@ class Register extends Component {
 										})}
 										placeholder="Name"
 										name="name"
+										autoComplete="name"
+										minLength="2"
+										maxLength="30"
 										value={this.state.name}
 										onChange={this.onChange}
 									/>
@@ -82,6 +87,7 @@ class Register extends Component {
 										})}
 										placeholder="Email Address"
 										name="email"
+										autoComplete="email"
 										value={this.state.email}
 										onChange={this.onChange}
 									/>
@@ -99,6 +105,9 @@ class Register extends Component {
 										})}
 										placeholder="Password"
 										name="password"
+										autoComplete="current-password"
+										minLength="6"
+										maxLength="30"
 										value={this.state.password}
 										onChange={this.onChange}
 									/>
@@ -114,6 +123,9 @@ class Register extends Component {
 										})}
 										placeholder="Confirm Password"
 										name="password2"
+										autoComplete="current-password"
+										minLength="6"
+										maxLength="30"
 										value={this.state.password2}
 										onChange={this.onChange}
 									/>

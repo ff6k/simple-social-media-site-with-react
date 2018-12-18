@@ -13,32 +13,32 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import './App.css';
 
+const authTokenExpired = expireDate => {
+	const currentTime = Date.now() / 1000;
+	console.log('currentTime > expireDate: ', currentTime > expireDate);
+	return currentTime > expireDate;
+};
+
 //check for token
 if (localStorage.jwtToken) {
-	console.log();
 	const token = localStorage.jwtToken;
+
 	//set auth token header auth
 	setAuthToken(token);
-	//decode token and get user info and expiration
-	const decoded = jwt_decode(token);
-	//set user and isAuthenticated
-	store.dispatch(setCurrentUser(decoded));
 
-	//check for expired token
-	const currentTime = Date.now() / 1000;
-	console.log(
-		'decoded.exp < currentTime:',
-		decoded.exp,
-		currentTime,
-		decoded.exp < currentTime
-	);
-	if (decoded.exp < currentTime) {
-		console.log('dispatching logoutUser()');
+	//decode token and get user info and expiration
+	const decodedToken = jwt_decode(token);
+
+	//set user and isAuthenticated
+	store.dispatch(setCurrentUser(decodedToken));
+
+	// redirect if user has expired token
+	if (authTokenExpired(decodedToken.exp)) {
 		//logout user
 		store.dispatch(logoutUser());
+
 		//TODO: clear current profile
 
-		console.log('redirect');
 		window.location.href = '/login';
 	}
 }
