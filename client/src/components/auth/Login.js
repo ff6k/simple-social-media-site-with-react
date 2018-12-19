@@ -11,10 +11,10 @@ class Login extends Component {
 		errors: {}
 	};
 
-	onChange = e =>
-		this.setState({
-			[e.target.name]: e.target.value
-		});
+	updateState = (key, value) =>
+		this.setState((prevState, props) => (prevState[key] = value));
+
+	onChange = e => this.updateState([e.target.name], e.target.value);
 
 	onSubmit = e => {
 		e.preventDefault();
@@ -36,10 +36,10 @@ class Login extends Component {
 		const { isAuthenticated } = this.props.auth;
 
 		if (prevProps.errors !== errors) {
-			this.setState({ errors });
+			this.updateState('errors', errors);
 		}
 		if (isAuthenticated) {
-			this.setState({ isAuthenticated });
+			this.updateState('isAuthenticated', isAuthenticated);
 			this.props.clearErrors();
 			history.push('/dashboard');
 		}

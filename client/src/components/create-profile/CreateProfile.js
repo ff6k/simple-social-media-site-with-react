@@ -25,10 +25,10 @@ class CreateProfile extends Component {
 		errors: {}
 	};
 
-	onChange = e =>
-		this.setState({
-			[e.target.name]: e.target.value
-		});
+	updateState = (key, value) =>
+		this.setState((prevState, props) => (prevState[key] = value));
+
+	onChange = e => this.updateState([e.target.name], e.target.value);
 	/* 
   onSubmit = e => {
     e.preventDefault();
