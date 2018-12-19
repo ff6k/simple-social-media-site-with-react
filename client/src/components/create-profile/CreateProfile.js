@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-//import TextFieldGroup from './../common/TextFieldGroup';
+import TextFieldGroup from './../common/TextFieldGroup';
+import TextAreaFieldGroup from './../common/TextFieldGroup';
+import SelectListGroup from './../common/SelectListGroup';
+import InputGroup from '../common/InputGroup';
 
 class CreateProfile extends Component {
 	state = {
@@ -22,11 +25,10 @@ class CreateProfile extends Component {
 		errors: {}
 	};
 
-	/* 
-  onChange = e =>
-    this.setState({
-      [e.target.name]: e.target.value
-    }); */
+	onChange = e =>
+		this.setState({
+			[e.target.name]: e.target.value
+		});
 	/* 
   onSubmit = e => {
     e.preventDefault();
@@ -92,4 +94,4 @@ const mapStateToProps = state => ({
 	errors: state.errors
 });
 
-export default connect(null)(CreateProfile);
+export default connect(mapStateToProps)(CreateProfile);
