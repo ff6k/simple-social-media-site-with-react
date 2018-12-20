@@ -16,7 +16,12 @@ const InputGroup = ({
 }) => {
 	return (
 		<div className="form-group">
-			<textarea
+			<div className="input-group-prepend">
+				<span className="input-group-text">
+					<i className={icon} />
+				</span>
+			</div>
+			<input
 				className={classnames('form-control form-control-lg', {
 					'is-invalid': error
 				})}
@@ -28,7 +33,6 @@ const InputGroup = ({
 				minLength={minLength}
 				maxLength={maxLength}
 			/>
-			{/* 			{info && <small className="form-text text-muted">{info}</small>} */}
 			{error && <div className="invalid-feedback">{error}</div>}
 		</div>
 	);
