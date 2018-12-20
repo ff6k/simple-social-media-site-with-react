@@ -25,7 +25,18 @@ const routeAction = require('./route-actions');
 // @desc    Get current user's profile
 // @access  Private
 router.get('/', requireLogin, (req, res) => {
-	routeAction.findProfile({ user: req.user.id }, res);
+	//routeAction.findProfile({ user: req.user.id }, res);
+	Profile.findOne({ user: req.user.id })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				return res.status(404).json({ error: 'There are no profiles' });
+			}
+			res.json(profile);
+		})
+		.catch(err => {
+			res.status(404).json({ error: 'There are no profiles' });
+		});
 });
 
 // @route   GET api/profile/all
