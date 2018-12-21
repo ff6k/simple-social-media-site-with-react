@@ -1,0 +1,1294 @@
+{
+	"info": {
+		"_postman_id": "899f4777-8109-456c-8939-f58a51a2892b",
+		"name": "Social Media Site",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User/Profile - End to End Test",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "599aa2c5-34ad-423a-99d8-9aba3ca6f974",
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "{{name}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "password2",
+									"value": "{{password2}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/users/register",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						},
+						"description": "Register as a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e10c9138-cb20-4745-baf4-b0d1dffa8518",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"AuthToken\", data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/users/login",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						},
+						"description": "login to acquire bearer token"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "handle",
+									"value": "{{handle}}",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "{{status}}",
+									"type": "text"
+								},
+								{
+									"key": "skills",
+									"value": "{{skills}}",
+									"type": "text"
+								},
+								{
+									"key": "website",
+									"value": "{{website}}",
+									"type": "text"
+								},
+								{
+									"key": "bio",
+									"value": "{{bio}}",
+									"type": "text"
+								},
+								{
+									"key": "linkedin",
+									"value": "{{linkedin}}",
+									"type": "text"
+								},
+								{
+									"key": "facebook",
+									"value": "{{facebook}}",
+									"type": "text"
+								},
+								{
+									"key": "instagram",
+									"value": "{{instagram}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						},
+						"description": "Create a profile for a user (ensure to update header authorization's bearer token)"
+					},
+					"response": [
+						{
+							"name": "http://localhost:5000/api/profile",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMTA2Y2RkNDY1MjI3NWNiNGM1MWM2YyIsIm5hbWUiOiJLZWxseSBHYWluZXMiLCJhdmF0YXIiOiIvL3d3dy5ncmF2YXRhci5jb20vYXZhdGFyL2EzZGZkNWNhNDEzMDcyNmEyYTY1MjgyMzhiYTIwZWZkP3M9MjAwJnI9cGcmZD1tbSIsImlhdCI6MTU0NDU4MDM5MywiZXhwIjoxNTQ0NTgzOTkzfQ.Zek86bCLOx1jSLj8u_AnNaRd-BmuBzAP_Exk1v8Ceuc",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "handle",
+											"value": "kellygaines",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "Active",
+											"type": "text"
+										},
+										{
+											"key": "skills",
+											"value": ".NET, SQL, HTML,    CSS",
+											"type": "text"
+										},
+										{
+											"key": "website",
+											"value": "http://mydomain.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "bio",
+											"value": "under construction",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "facebook",
+											"value": "http://www.facebook/kelly",
+											"type": "text"
+										},
+										{
+											"key": "instagram",
+											"value": "http://www.instagram/kelly",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "310"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"136-seR+NryTuLL/glm55OsCfxBNMt4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 12 Dec 2018 02:07:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"skills\": [\n        \".NET\",\n        \"SQL\",\n        \"HTML\",\n        \"CSS\"\n    ],\n    \"_id\": \"5c106d4f4652275cb4c51c6e\",\n    \"user\": \"5c106cdd4652275cb4c51c6c\",\n    \"handle\": \"kellygaines\",\n    \"status\": \"Active\",\n    \"social\": {\n        \"facebook\": \"http://www.facebook/kelly\",\n        \"instagram\": \"http://www.instagram/kelly\"\n    },\n    \"experience\": [],\n    \"education\": [],\n    \"date\": \"2018-12-12T02:07:11.487Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Add Experience to Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e53745f-81d0-4df5-b8c3-d1b4e3a3d9b5",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"exp-id\", data.experience[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "{{exp-title}} (Version: {{$timestamp}})",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "{{exp-company}}",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "{{exp-from}}",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "{{exp-to}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{exp-description}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/experience",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"experience"
+							]
+						},
+						"description": "adding experience to user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Experience from Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7d906c7-10ea-4c48-a67f-a4e5bf0b8afe",
+								"exec": [
+									"pm.environment.set(\"exp-id\", '');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/experience/{{exp-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"experience",
+								"{{exp-id}}"
+							]
+						},
+						"description": "deleting experience from user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Education to Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74f14c98-b67e-4381-81c2-e133afb5f9aa",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"edu-id\", data.education[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "school",
+									"value": "{{edu-school}} (Version: {{$timestamp}})",
+									"type": "text"
+								},
+								{
+									"key": "degree",
+									"value": "{{edu-degree}}",
+									"type": "text"
+								},
+								{
+									"key": "fieldofstudy",
+									"value": "{{edu-fieldofstudy}}",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "{{edu-from}}",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "{{edu-to}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/education",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"education"
+							]
+						},
+						"description": "Add education to user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Education from Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6350aae-de55-420b-8adb-b061baff1297",
+								"exec": [
+									"pm.environment.set(\"edu-id\", '');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/education/5c11bea50050c511d489444e",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"education",
+								"5c11bea50050c511d489444e"
+							]
+						},
+						"description": "deleting education from user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In User (Load User Id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "379b56e3-978d-4740-8bcd-7235c84c9c1d",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"user-id\", data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/users/current",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"current"
+							]
+						},
+						"description": "Obtain the currently logged in user"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Experience to Profile (2nd)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e3b1ad25-8494-4509-8aef-c08a00511ff5",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"exp-id\", data.experience[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "{{exp-title}} (Version: {{$timestamp}})",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "{{exp-company}}",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "{{exp-from}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{exp-description}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/experience",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"experience"
+							]
+						},
+						"description": "adding experience to user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Education to Profile (2nd)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "137d285f-cd07-446a-8cbd-75a18e7ecff3",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"edu-id\", data.education[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "school",
+									"value": "{{edu-school}} (Version: {{$timestamp}})",
+									"type": "text"
+								},
+								{
+									"key": "degree",
+									"value": "{{edu-degree}}",
+									"type": "text"
+								},
+								{
+									"key": "fieldofstudy",
+									"value": "{{edu-fieldofstudy}}",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "{{edu-from}}",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "{{edu-to}} ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/education",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"education"
+							]
+						},
+						"description": "Add education to user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile By User Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/user/{{user-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"user",
+								"{{user-id}}"
+							]
+						},
+						"description": "Get user profile by user id"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile By Handle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/handle/{{handle}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"handle",
+								"{{handle}}"
+							]
+						},
+						"description": "Get user profile by handle"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All User Profiles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/all",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"all"
+							]
+						},
+						"description": "Get list of all user profiles"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  Logged In User Account and Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "499c4a2c-ee1e-41cb-acb1-c6efc5300a3b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						},
+						"description": "delete user and profile"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "68518db1-dbed-4046-ad0d-de339e0d4b65",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b23738ad-4892-4929-beeb-523256eece83",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Delete Stuff - Harry Helper",
+			"item": [
+				{
+					"name": "Delete Education from Profile",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/experience/{{edu-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"experience",
+								"{{edu-id}}"
+							]
+						},
+						"description": "deleting education from user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Experience from Profile",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile/experience/{{exp-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"experience",
+								"{{exp-id}}"
+							]
+						},
+						"description": "deleting experience from user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  Logged In User Account and Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "499c4a2c-ee1e-41cb-acb1-c6efc5300a3b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/profile",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						},
+						"description": "delete user and profile"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "780bd0ad-45e9-480f-ade0-77a33adc3130",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"post-id\", data._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "{{test-post}} (Version: {{$timestamp}})",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/{{post-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{post-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Posts By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/{{post-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{post-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post By Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/like/{{post-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"like",
+								"{{post-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Post By Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AuthToken}}",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/unlike/{{post-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"unlike",
+								"{{post-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment on Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17696079-8cc5-4b8c-a2e6-83de524b4033",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"comment-id\", data.comments[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "{{test-comment}} (Version {{$timestamp}})",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/comment/{{post-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"comment",
+								"{{post-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{AuthToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{WebAppUrl}}/api/posts/{{post-id}}/comment/{{comment-id}}",
+							"host": [
+								"{{WebAppUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{post-id}}",
+								"comment",
+								"{{comment-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "api routes for posts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a55328ef-3367-4889-8570-bc08749037da",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ad0fc12a-186a-4e04-87f1-0a4a8c83d418",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
