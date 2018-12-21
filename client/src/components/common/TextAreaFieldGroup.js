@@ -6,7 +6,6 @@ const TextAreaFieldGroup = ({
 	name,
 	placeholder,
 	value,
-	type,
 	error,
 	onChange,
 	autoComplete,
@@ -21,7 +20,6 @@ const TextAreaFieldGroup = ({
 				</span>
 			</div>
 			<textarea
-				type={type}
 				className={classnames('form-control form-control-lg', {
 					'is-invalid': error
 				})}
@@ -49,10 +47,6 @@ TextAreaFieldGroup.propTypes = {
 	autoComplete: PropTypes.string,
 	minLength: PropTypes.string,
 	maxLength: PropTypes.string
-};
-
-TextAreaFieldGroup.defaultProps = {
-	type: 'text'
 };
 
 export default TextAreaFieldGroup;
