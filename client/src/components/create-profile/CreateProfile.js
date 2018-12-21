@@ -27,19 +27,23 @@ class CreateProfile extends Component {
 		errors: {}
 	};
 
-	updateState = (key, value) =>
+	updateState = (key, value) => {
+		if (key && !value) value = key;
 		this.setState((prevState, props) => (prevState[key] = value));
+	};
 
-	onChange = e => this.updateState([e.target.name], e.target.value);
+	onChange = ({ target }) => this.updateState(target.name, target.value);
 
 	onSubmit = e => {
 		e.preventDefault();
+
+		const { createProfile, history } = this.props;
 
 		const profileData = {
 			...this.state
 		};
 
-		this.props.createProfile(profileData, this.props.history);
+		createProfile(profileData, history);
 	};
 
 	static getDerivedStateFromProps(nextProps, prevProps) {
@@ -50,7 +54,7 @@ class CreateProfile extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		const { errors, history } = this.props;
+		const { errors } = this.props;
 
 		if (prevProps.errors !== errors) {
 			this.setState({ errors });
