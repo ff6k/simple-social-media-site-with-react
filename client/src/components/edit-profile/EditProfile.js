@@ -25,7 +25,20 @@ class EditProfile extends Component {
 		linkedin: '',
 		youtube: '',
 		instagram: '',
-		errors: {}
+		errors: {},
+		options: [
+			{ label: '* Select Professional Status', value: '' },
+			{ label: 'Developer', value: 'Developer' },
+			{ label: 'Junior Developer', value: 'Junior Developer' },
+			{ label: 'Senior Developer', value: 'Senior Developer' },
+			{ label: 'Full Stack Developer', value: 'Full Stack Developer' },
+			{ label: 'Sr. Full Stack Developer', value: 'Sr. Full Stack Developer' },
+			{ label: 'Manager', value: 'Manager' },
+			{ label: 'Student or Learning', value: 'Student or Learning' },
+			{ label: 'Instructor or Teacher', value: 'Instructor or Teacher' },
+			{ label: 'Intern', value: 'Intern' },
+			{ label: 'Other', value: 'Other' }
+		]
 	};
 
 	fillProfileState = profile => {
@@ -55,10 +68,8 @@ class EditProfile extends Component {
 		this.props.getCurrentProfile();
 	}
 
-	updateState = (key, value) => {
-		if (key && !value) value = key;
+	updateState = (key, value) =>
 		this.setState((prevState, props) => (prevState[key] = value));
-	};
 
 	onChange = ({ target }) => this.updateState(target.name, target.value);
 
@@ -96,7 +107,6 @@ class EditProfile extends Component {
 
 	render() {
 		const { displaySocialInputs, errors } = this.state;
-		console.log('this.state: ', this.state);
 
 		let socialInputs;
 
@@ -147,20 +157,6 @@ class EditProfile extends Component {
 			);
 		}
 
-		//select options for status
-		const options = [
-			{ label: '* Select Professional Status', value: 0 },
-			{ label: 'Developer', value: 'Developer' },
-			{ label: 'Junior Developer', value: 'Junior Developer' },
-			{ label: 'Senior Developer', value: 'Senior Developer' },
-			{ label: 'Full Stack Developer', value: 'Full Stack Developer' },
-			{ label: 'Sr. Full Stack Developer', value: 'Sr. Full Stack Developer' },
-			{ label: 'Manager', value: 'Manager' },
-			{ label: 'Student or Learning', value: 'Student or Learning' },
-			{ label: 'Instructor or Teacher', value: 'Instructor or Teacher' },
-			{ label: 'Intern', value: 'Intern' },
-			{ label: 'Other', value: 'Other' }
-		];
 		return (
 			<div className="create-profile">
 				<div className="container">
@@ -182,7 +178,7 @@ class EditProfile extends Component {
 									name="status"
 									value={this.state.status}
 									onChange={this.onChange}
-									options={options}
+									options={this.state.options}
 									error={errors.status}
 									info="Give us an idea of where you are at in your career"
 								/>
