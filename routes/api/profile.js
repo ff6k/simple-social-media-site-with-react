@@ -89,16 +89,14 @@ router.post('/', requireLogin, (req, res) => {
 		if (field === 'skills' && !CoreValidation.isEmpty(req.body.skills)) {
 			profileFields.skills = req.body.skills;
 		} else {
-			const value = req.body[field];
-			if (value) profileFields[field] = value;
+			profileFields[field] = req.body[field];
 		}
 	});
 
 	profileFields.social = {};
 
 	socialFields.forEach(field => {
-		const value = req.body[field];
-		if (value) profileFields.social[field] = value;
+		profileFields.social[field] = req.body[field];
 	});
 
 	Profile.findOne({ handle: profileFields.handle }).then(profile => {
