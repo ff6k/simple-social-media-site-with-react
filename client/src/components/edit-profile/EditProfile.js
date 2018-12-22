@@ -156,7 +156,6 @@ class EditProfile extends Component {
 				</div>
 			);
 		}
-
 		return (
 			<div className="create-profile">
 				<div className="container">
