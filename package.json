@@ -1,40 +1,38 @@
 {
-	"name": "social-media-site",
-	"version": "1.0.0",
-	"description": "Social network for developers - MERN stack demonstration",
-	"main": "server.js",
-	"scripts": {
-		"client-install": "npm install --prefix client",
-		"start": "node server.js",
-		"server": "nodemon server.js",
-		"client": "npm start --prefix client",
-		"dev": "concurrently \"npm run server\" \"npm run client\""
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/briang123/Social-Media-Site.git"
-	},
 	"author": "Brian Gaines",
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/briang123/Social-Media-Site/issues"
 	},
-	"homepage": "https://github.com/briang123/Social-Media-Site#readme",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
 		"express": "^4.16.4",
 		"gravatar": "^1.8.0",
 		"jsonwebtoken": "^8.4.0",
-		"moment": "^2.23.0",
-		"mongoose": "^5.4.0",
-		"passport": "^0.4.0",
+		"mongoose": "^5.4.1",
 		"passport-jwt": "^4.0.0",
-		"react-moment": "^0.8.4",
-		"validator": "^10.9.0"
+		"passport": "^0.4.0",
+		"validator": "^10.10.0"
 	},
+	"description": "Social network for developers - MERN stack demonstration",
 	"devDependencies": {
 		"concurrently": "^4.1.0",
 		"nodemon": "^1.18.9"
-	}
+	},
+	"homepage": "https://github.com/briang123/Social-Media-Site#readme",
+	"license": "MIT",
+	"main": "server.js",
+	"name": "social-media-site",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/briang123/Social-Media-Site.git"
+	},
+	"scripts": {
+		"client-install": "npm install --prefix client",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"server": "nodemon server.js",
+		"start": "node server.js"
+	},
+	"version": "1.0.0"
 }

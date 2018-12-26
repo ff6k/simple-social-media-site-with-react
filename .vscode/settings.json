@@ -1,0 +1,18 @@
+{
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.renderControlCharacters": false,
+	"editor.tabSize": 2,
+	"emmet.includeLanguages": {
+		"javascript": "javascriptreact"
+	},
+	"emmet.syntaxProfiles": {
+		"javascript": "jsx"
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true
+	}
+}

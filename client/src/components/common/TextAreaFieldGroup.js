@@ -1,30 +1,30 @@
-import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 const TextAreaFieldGroup = ({
-	name,
-	placeholder,
-	value,
-	error,
-	onChange,
 	autoComplete,
+	error,
+	maxLength,
 	minLength,
-	maxLength
+	name,
+	onChange,
+	placeholder,
+	value
 }) => {
 	return (
 		<div className="input-group mb-3">
 			<textarea
+				autoComplete={autoComplete}
 				className={classnames('form-control form-control-lg', {
 					'is-invalid': error
 				})}
-				placeholder={placeholder}
-				name={name}
-				autoComplete={autoComplete}
-				value={value}
-				onChange={onChange}
-				minLength={minLength}
 				maxLength={maxLength}
+				minLength={minLength}
+				name={name}
+				onChange={onChange}
+				placeholder={placeholder}
+				value={value}
 			/>
 			{error && <div className="invalid-feedback">{error}</div>}
 		</div>
@@ -32,16 +32,15 @@ const TextAreaFieldGroup = ({
 };
 
 TextAreaFieldGroup.propTypes = {
-	name: PropTypes.string.isRequired,
-	placeholder: PropTypes.string,
-	value: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	info: PropTypes.string,
-	error: PropTypes.string,
-	onChange: PropTypes.func.isRequired,
 	autoComplete: PropTypes.string,
+	error: PropTypes.string,
+	info: PropTypes.string,
+	maxLength: PropTypes.string,
 	minLength: PropTypes.string,
-	maxLength: PropTypes.string
+	name: PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired,
+	placeholder: PropTypes.string,
+	value: PropTypes.string.isRequired
 };
 
 export default TextAreaFieldGroup;
