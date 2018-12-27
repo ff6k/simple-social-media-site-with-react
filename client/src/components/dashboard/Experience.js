@@ -6,7 +6,9 @@ import { deleteExperience } from '../../actions/profileActions';
 
 class Experience extends Component {
 	onDeleteClick(id) {
-		this.props.deleteExperience(id);
+		if (window.confirm('Are you sure you would like to delete?')) {
+			this.props.deleteExperience(id);
+		}
 	}
 
 	render() {
