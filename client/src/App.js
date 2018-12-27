@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser, logoutUser } from './actions/authActions';
-import { clearCurrentProfile } from './actions/profileActions';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import store from './store';
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { logoutUser, setCurrentUser } from './actions/authActions';
+import { clearCurrentProfile } from './actions/profileActions';
+import './App.css';
+import AddEducation from './components/add-credentials/AddEducation';
+import AddExperience from './components/add-credentials/AddExperience';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import PrivateRoute from './components/common/PrivateRoute';
-
-import Navbar from './components/layout/Navbar';
+import CreateProfile from './components/create-profile/CreateProfile';
+import Dashboard from './components/dashboard/Dashboard';
+import EditProfile from './components/edit-profile/EditProfile';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import Dashboard from './components/dashboard/Dashboard';
-import CreateProfile from './components/create-profile/CreateProfile';
-import EditProfile from './components/edit-profile/EditProfile';
-import AddExperience from './components/add-credentials/AddExperience';
-import AddEducation from './components/add-credentials/AddEducation';
-
-import './App.css';
+import Navbar from './components/layout/Navbar';
+import Profiles from './components/profiles/Profiles';
+import store from './store';
+import setAuthToken from './utils/setAuthToken';
 
 const authTokenExpired = expireDate => {
 	const currentTime = Date.now() / 1000;
@@ -59,48 +57,49 @@ class App extends Component {
 				<Router>
 					<div className="App">
 						<Navbar />
-						<Route exact path="/" component={Landing} />
+						<Route component={Landing} exact path="/" />
 						<div className="container">
-							<Route exact path="/register" component={Register} />
-							<Route exact path="/login" component={Login} />
+							<Route component={Register} exact path="/register" />
+							<Route component={Login} exact path="/login" />
+							<Route component={Profiles} exact path="/profiles" />
 							<Switch>
 								<PrivateRoute
+									component={Dashboard}
 									exact
 									path="/dashboard"
 									redirectTo="/login"
-									component={Dashboard}
 								/>
 							</Switch>
 							<Switch>
 								<PrivateRoute
+									component={CreateProfile}
 									exact
 									path="/create-profile"
 									redirectTo="/login"
-									component={CreateProfile}
 								/>
 							</Switch>
 							<Switch>
 								<PrivateRoute
+									component={EditProfile}
 									exact
 									path="/edit-profile"
 									redirectTo="/login"
-									component={EditProfile}
 								/>
 							</Switch>
 							<Switch>
 								<PrivateRoute
+									component={AddExperience}
 									exact
 									path="/add-experience"
 									redirectTo="/login"
-									component={AddExperience}
 								/>
 							</Switch>
 							<Switch>
 								<PrivateRoute
+									component={AddEducation}
 									exact
 									path="/add-education"
 									redirectTo="/login"
-									component={AddEducation}
 								/>
 							</Switch>
 						</div>

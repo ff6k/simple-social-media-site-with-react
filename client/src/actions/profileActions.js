@@ -3,6 +3,7 @@ import {
 	CLEAR_CURRENT_PROFILE,
 	GET_ERRORS,
 	GET_PROFILE,
+	GET_PROFILES,
 	PROFILE_LOADING,
 	SET_CURRENT_USER
 } from './types';
@@ -22,6 +23,25 @@ export const getCurrentProfile = () => dispatch => {
 			dispatch({
 				payload: {},
 				type: GET_PROFILE
+			})
+		);
+};
+
+//get profiles
+export const getProfiles = () => dispatch => {
+	dispatch(setProfileLoading());
+	axios
+		.get('/api/profile/all')
+		.then(res =>
+			dispatch({
+				payload: res.data,
+				type: GET_PROFILES
+			})
+		)
+		.catch(err =>
+			dispatch({
+				payload: null,
+				type: GET_PROFILES
 			})
 		);
 };
@@ -80,33 +100,37 @@ export const addEducation = (eduData, history) => dispatch => {
 
 //delete education
 export const deleteEducation = id => dispatch => {
-	axios
-		.delete(`/api/profile/education/${id}`)
-		.then(res => dispatch({ payload: res.data, type: GET_PROFILE }))
-		.catch(err =>
-			dispatch({
-				payload: err.response.data,
-				type: GET_ERRORS
-			})
-		);
+	if (window.confirm('Are you sure? This cannot be undone!')) {
+		axios
+			.delete(`/api/profile/education/${id}`)
+			.then(res => dispatch({ payload: res.data, type: GET_PROFILE }))
+			.catch(err =>
+				dispatch({
+					payload: err.response.data,
+					type: GET_ERRORS
+				})
+			);
+	}
 };
 
 //delete experience
 export const deleteExperience = id => dispatch => {
-	axios
-		.delete(`/api/profile/experience/${id}`)
-		.then(res =>
-			dispatch({
-				payload: res.data,
-				type: GET_PROFILE
-			})
-		)
-		.catch(err =>
-			dispatch({
-				payload: err.response.data,
-				type: GET_ERRORS
-			})
-		);
+	if (window.confirm('Are you sure? This cannot be undone!')) {
+		axios
+			.delete(`/api/profile/experience/${id}`)
+			.then(res =>
+				dispatch({
+					payload: res.data,
+					type: GET_PROFILE
+				})
+			)
+			.catch(err =>
+				dispatch({
+					payload: err.response.data,
+					type: GET_ERRORS
+				})
+			);
+	}
 };
 
 //delete account and profile
