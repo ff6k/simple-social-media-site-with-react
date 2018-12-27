@@ -1,31 +1,28 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import TextFieldGroup from './../common/TextFieldGroup';
-import TextAreaFieldGroup from './../common/TextFieldGroup';
-import SelectListGroup from './../common/SelectListGroup';
-import InputGroup from '../common/InputGroup';
+import { Link, withRouter } from 'react-router-dom';
 import { editProfile, getCurrentProfile } from '../../actions/profileActions';
+import InputGroup from '../common/InputGroup';
 import ObjectMapper from './../../utils/objectMapper';
+import SelectListGroup from './../common/SelectListGroup';
+import {
+	default as TextAreaFieldGroup,
+	default as TextFieldGroup
+} from './../common/TextFieldGroup';
 
 class EditProfile extends Component {
 	state = {
-		displaySocialInputs: false,
-		handle: '',
-		company: '',
-		website: '',
-		location: '',
-		status: '',
-		skills: '',
-		githubprofile: '',
 		bio: '',
-		twitter: '',
-		facebook: '',
-		linkedin: '',
-		youtube: '',
-		instagram: '',
+		company: '',
+		displaySocialInputs: false,
 		errors: {},
+		facebook: '',
+		githubprofile: '',
+		handle: '',
+		instagram: '',
+		linkedin: '',
+		location: '',
 		options: [
 			{ label: '* Select Professional Status', value: '' },
 			{ label: 'Developer', value: 'Developer' },
@@ -38,7 +35,12 @@ class EditProfile extends Component {
 			{ label: 'Instructor or Teacher', value: 'Instructor or Teacher' },
 			{ label: 'Intern', value: 'Intern' },
 			{ label: 'Other', value: 'Other' }
-		]
+		],
+		skills: '',
+		status: '',
+		twitter: '',
+		website: '',
+		youtube: ''
 	};
 
 	fillProfileState = profile => {
@@ -114,44 +116,44 @@ class EditProfile extends Component {
 			socialInputs = (
 				<div>
 					<InputGroup
-						placeholder="Twitter Profile URL"
-						name="twitter"
-						icon="fab fa-twitter"
-						value={this.state.twitter}
-						onChange={this.onChange}
 						error={errors.twitter}
+						icon="fab fa-twitter"
+						name="twitter"
+						onChange={this.onChange}
+						placeholder="Twitter Profile URL"
+						value={this.state.twitter}
 					/>
 					<InputGroup
-						placeholder="Facebook Page URL"
-						name="facebook"
-						icon="fab fa-facebook"
-						value={this.state.facebook}
-						onChange={this.onChange}
 						error={errors.facebook}
+						icon="fab fa-facebook"
+						name="facebook"
+						onChange={this.onChange}
+						placeholder="Facebook Page URL"
+						value={this.state.facebook}
 					/>
 					<InputGroup
-						placeholder="LinkedIn Profile URL"
-						name="linkedin"
-						icon="fab fa-linkedin"
-						value={this.state.linkedin}
-						onChange={this.onChange}
 						error={errors.linkedin}
+						icon="fab fa-linkedin"
+						name="linkedin"
+						onChange={this.onChange}
+						placeholder="LinkedIn Profile URL"
+						value={this.state.linkedin}
 					/>
 					<InputGroup
-						placeholder="YouTube Channel URL"
-						name="youtube"
-						icon="fab fa-youtube"
-						value={this.state.youtube}
-						onChange={this.onChange}
 						error={errors.youtube}
+						icon="fab fa-youtube"
+						name="youtube"
+						onChange={this.onChange}
+						placeholder="YouTube Channel URL"
+						value={this.state.youtube}
 					/>
 					<InputGroup
-						placeholder="Instagram Page URL"
-						name="instagram"
-						icon="fab fa-instagram"
-						value={this.state.instagram}
-						onChange={this.onChange}
 						error={errors.instagram}
+						icon="fab fa-instagram"
+						name="instagram"
+						onChange={this.onChange}
+						placeholder="Instagram Page URL"
+						value={this.state.instagram}
 					/>
 				</div>
 			);
@@ -161,84 +163,87 @@ class EditProfile extends Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-md-8 m-auto">
+							<Link className="btn btn-light" to="/dashboard">
+								Go Back
+							</Link>
 							<h1 className="display-4 text-center">Edit Profile</h1>
 							<small className="d-black pb-3">* = Required fields</small>
 							<form onSubmit={this.onSubmit}>
 								<TextFieldGroup
-									placeholder="* Profile Handle"
-									name="handle"
-									value={this.state.handle}
-									onChange={this.onChange}
 									error={errors.handle}
 									info="A unique handle for your profile URL. Your full name, company name, nickname"
+									name="handle"
+									onChange={this.onChange}
+									placeholder="* Profile Handle"
+									value={this.state.handle}
 								/>
 								<SelectListGroup
-									placeholder="Status"
-									name="status"
-									value={this.state.status}
-									onChange={this.onChange}
-									options={this.state.options}
 									error={errors.status}
 									info="Give us an idea of where you are at in your career"
+									name="status"
+									onChange={this.onChange}
+									options={this.state.options}
+									placeholder="Status"
+									value={this.state.status}
 								/>
 								<TextFieldGroup
-									placeholder="Company"
-									name="company"
-									value={this.state.company}
-									onChange={this.onChange}
 									error={errors.company}
 									info="Could be your own company or one you work for"
+									name="company"
+									onChange={this.onChange}
+									placeholder="Company"
+									value={this.state.company}
 								/>
 								<TextFieldGroup
-									placeholder="Location"
-									name="location"
-									value={this.state.location}
-									onChange={this.onChange}
 									error={errors.location}
 									info="City or city & state suggested (eg. San Diego, CA)"
+									name="location"
+									onChange={this.onChange}
+									placeholder="Location"
+									value={this.state.location}
 								/>
 								<TextFieldGroup
-									placeholder="* Skills"
-									name="skills"
-									value={this.state.skills}
-									onChange={this.onChange}
 									error={errors.skills}
 									info="Please use comma separated values (eg. HTML, CSS, JavaScript, React.Js, MongoDB)"
+									name="skills"
+									onChange={this.onChange}
+									placeholder="* Skills"
+									value={this.state.skills}
 								/>
 								<TextFieldGroup
-									placeholder="Github Profile"
-									name="githubprofile"
-									value={this.state.githubprofile}
-									onChange={this.onChange}
 									error={errors.githubprofile}
 									info="If you want your latest repos and a Github link, include your profile name"
+									name="githubprofile"
+									onChange={this.onChange}
+									placeholder="Github Profile"
+									value={this.state.githubprofile}
 								/>
 								<TextAreaFieldGroup
-									placeholder="Short Bio"
-									name="bio"
-									value={this.state.bio}
-									onChange={this.onChange}
 									error={errors.bio}
 									info="Tell us a little about yourself"
+									name="bio"
+									onChange={this.onChange}
+									placeholder="Short Bio"
+									value={this.state.bio}
 								/>
 								<div className="mb-3">
 									<button
-										type="button"
+										className="btn btn-light"
 										onClick={e => {
 											this.setState(prevState => ({
 												displaySocialInputs: !prevState.displaySocialInputs
 											}));
 										}}
-										className="btn btn-light"
+										type="button"
 									>
 										Add Social Network Links
 									</button>
 									<span className="text-muted">Optional</span>
 									{socialInputs}
 									<input
+										className="btn btn-info btn-block mt-4"
 										type="submit"
 										value="Submit"
-										className="btn btn-info btn-block mt-4"
 									/>
 								</div>
 							</form>
@@ -252,14 +257,14 @@ class EditProfile extends Component {
 
 EditProfile.propTypes = {
 	editProfile: PropTypes.func.isRequired,
+	errors: PropTypes.object.isRequired,
 	getCurrentProfile: PropTypes.func.isRequired,
-	profile: PropTypes.object.isRequired,
-	errors: PropTypes.object.isRequired
+	profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-	profile: state.profile,
-	errors: state.errors
+	errors: state.errors,
+	profile: state.profile
 });
 
 export default connect(
