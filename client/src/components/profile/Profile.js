@@ -11,9 +11,13 @@ import ProfileHeader from './ProfileHeader';
 
 class Profile extends Component {
 	componentDidMount() {
-		const handle = this.props.match.params.handle;
-		if (handle) {
-			this.props.getProfileByHandle(handle);
+		const { handle } = this.props.match.params;
+		handle && this.props.getProfileByHandle(handle);
+	}
+
+	componentDidUpdate() {
+		if (this.props.profile.profile === null && !this.props.profile.loading) {
+			this.props.history.push('/not-found');
 		}
 	}
 

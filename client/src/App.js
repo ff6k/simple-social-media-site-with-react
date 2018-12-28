@@ -16,6 +16,7 @@ import EditProfile from './components/edit-profile/EditProfile';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
+import NotFound from './components/not-found/NotFound';
 import Profile from './components/profile/Profile';
 import Profiles from './components/profiles/Profiles';
 import store from './store';
@@ -104,6 +105,7 @@ class App extends Component {
 									redirectTo="/login"
 								/>
 							</Switch>
+							<Route component={NotFound} exact path="/not-found" />
 						</div>
 						<Footer />
 					</div>
