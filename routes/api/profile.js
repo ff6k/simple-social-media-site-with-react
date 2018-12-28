@@ -47,9 +47,20 @@ router.get('/all', (req, res) => routeAction.findProfile({}, res));
 // @route   GET api/profile/handle/:handle
 // @desc    Get profile by handle
 // @access  Public
-router.get('/handle/:handle', (req, res) =>
-	routeAction.findProfile({ handle: req.params.handle }, res)
-);
+router.get('/handle/:handle', (req, res) => {
+	//routeAction.findProfile({ handle: req.params.handle }, res)
+	Profile.find({ handle: req.params.handle })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				return res.status(404).json({ error: 'There are no profiles' });
+			}
+			res.json(profile);
+		})
+		.catch(err => {
+			res.status(404).json({ error: 'There are no profiles' });
+		});
+});
 
 // @route   GET api/profile/user/:user_id
 // @desc    Get profile by user id
@@ -225,12 +236,12 @@ router.delete('/', requireLogin, (req, res) => {
 			User.findOneAndRemove({ _id: req.user.id })
 				.then(user =>
 					res.json({
+						email: user.email,
 						message:
 							'Successfully deleted user' + (profile ? ' and profile.' : '.'),
 						name: user.name,
-						email: user.email,
-						userId: user.id,
-						profileId: profile ? profile.id : null
+						profileId: profile ? profile.id : null,
+						userId: user.id
 					})
 				)
 				.catch(err =>

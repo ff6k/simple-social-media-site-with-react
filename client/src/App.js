@@ -16,6 +16,7 @@ import EditProfile from './components/edit-profile/EditProfile';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
+import Profile from './components/profile/Profile';
 import Profiles from './components/profiles/Profiles';
 import store from './store';
 import setAuthToken from './utils/setAuthToken';
@@ -62,6 +63,7 @@ class App extends Component {
 							<Route component={Register} exact path="/register" />
 							<Route component={Login} exact path="/login" />
 							<Route component={Profiles} exact path="/profiles" />
+							<Route component={Profile} exact path="/profile/:handle" />
 							<Switch>
 								<PrivateRoute
 									component={Dashboard}
