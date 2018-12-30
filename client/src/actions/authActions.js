@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { GET_ERRORS, CLEAR_ERRORS, SET_CURRENT_USER } from './types';
-import setAuthToken from './../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
+import setAuthToken from './../utils/setAuthToken';
+import { CLEAR_ERRORS, GET_ERRORS, SET_CURRENT_USER } from './types';
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -10,8 +10,8 @@ export const registerUser = (userData, history) => dispatch => {
 		.then(res => history.push('/login'))
 		.catch(err =>
 			dispatch({
-				type: GET_ERRORS,
-				payload: err.response.data
+				payload: err.response.data,
+				type: GET_ERRORS
 			})
 		);
 };
@@ -32,23 +32,23 @@ export const loginUser = userData => dispatch => {
 		})
 		.catch(err =>
 			dispatch({
-				type: GET_ERRORS,
-				payload: err.response.data
+				payload: err.response.data,
+				type: GET_ERRORS
 			})
 		);
 };
 
 export const setCurrentUser = decoded => {
 	return {
-		type: SET_CURRENT_USER,
-		payload: decoded
+		payload: decoded,
+		type: SET_CURRENT_USER
 	};
 };
 
 export const clearErrors = () => dispatch => {
 	dispatch({
-		type: CLEAR_ERRORS,
-		payload: {}
+		payload: {},
+		type: CLEAR_ERRORS
 	});
 };
 

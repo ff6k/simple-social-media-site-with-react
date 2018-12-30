@@ -12,26 +12,33 @@ class Education extends Component {
 	}
 
 	render() {
-		const education = this.props.education.map(edu => (
-			<tr key={edu._id}>
-				<td>{edu.school}</td>
-				<td>
-					{edu.degree} {edu.fieldofstudy}
-				</td>
-				<td>
-					<Moment format="YYYY/MM/DD">{edu.from}</Moment> -{' '}
-					{edu.to ? <Moment format="YYYY/MM/DD">{edu.to}</Moment> : 'Now'}
-				</td>
-				<td>
-					<button
-						className="btn btn-danger"
-						onClick={this.onDeleteClick.bind(this, edu._id)}
-					>
-						Delete
-					</button>
-				</td>
-			</tr>
-		));
+		const { education } = this.props;
+		let educations;
+
+		if (education) {
+			educations = education.map(edu => (
+				<tr key={edu._id}>
+					<td>{edu.school}</td>
+					<td>
+						{edu.degree} {edu.fieldofstudy}
+					</td>
+					<td>
+						<Moment format="YYYY/MM/DD">{edu.from}</Moment> -{' '}
+						{edu.to ? <Moment format="YYYY/MM/DD">{edu.to}</Moment> : 'Now'}
+					</td>
+					<td>
+						<button
+							className="btn btn-danger"
+							onClick={this.onDeleteClick.bind(this, edu._id)}
+						>
+							Delete
+						</button>
+					</td>
+				</tr>
+			));
+		} else {
+			educations = 'No information';
+		}
 		return (
 			<div>
 				<h4 className="mb-4">Education Credentials</h4>
@@ -44,7 +51,7 @@ class Education extends Component {
 							<th />
 						</tr>
 					</thead>
-					<tbody>{education}</tbody>
+					<tbody>{educations}</tbody>
 				</table>
 			</div>
 		);

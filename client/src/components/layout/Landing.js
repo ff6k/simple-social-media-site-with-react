@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Landing extends Component {
 	componentDidMount() {
@@ -24,10 +24,10 @@ class Landing extends Component {
 									from other developers
 								</p>
 								<hr />
-								<Link to="/register" className="btn btn-lg btn-info mr-2">
+								<Link className="btn btn-lg btn-info mr-2" to="/register">
 									Sign Up
 								</Link>
-								<Link to="/login" className="btn btn-lg btn-light">
+								<Link className="btn btn-lg btn-light" to="/login">
 									Login
 								</Link>
 							</div>

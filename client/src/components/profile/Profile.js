@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getProfileByHandle } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
+import CoreValidation from './../../validation/core-validation';
 import ProfileAbout from './ProfileAbout';
 import ProfileCreds from './ProfileCreds';
 import ProfileGithub from './ProfileGithub';
@@ -16,7 +17,11 @@ class Profile extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.profile.profile === null && !this.props.profile.loading) {
+		if (
+			CoreValidation.isEmpty(this.props.profile) ||
+			(CoreValidation.isEmpty(this.props.profile.profile) &&
+				!this.props.profile.loading)
+		) {
 			this.props.history.push('/not-found');
 		}
 	}
@@ -27,7 +32,11 @@ class Profile extends Component {
 
 		let profileContent;
 
-		if (profile === null || loading) {
+		if (
+			CoreValidation.isEmpty(profile) ||
+			CoreValidation.isEmpty(profile[0]) ||
+			loading
+		) {
 			profileContent = <Spinner />;
 		} else {
 			profile = profile[0];

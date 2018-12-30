@@ -7,6 +7,7 @@ import {
 	deleteAccount,
 	getCurrentProfile
 } from './../../actions/profileActions';
+import CoreValidation from './../../validation/core-validation';
 import Education from './Education';
 import Experience from './Experience';
 import ProfileActions from './ProfileActions';
@@ -26,11 +27,11 @@ class Dashboard extends Component {
 
 		let dashboardContent;
 
-		if (profile === null || loading) {
+		if (CoreValidation.isEmpty(profile) || loading) {
 			dashboardContent = <Spinner />;
 		} else {
 			//check if logged in user has profile
-			if (Object.keys(profile).length > 0) {
+			if (!CoreValidation.isEmpty(profile)) {
 				dashboardContent = (
 					<div>
 						<p className="lead text-muted">
@@ -40,7 +41,6 @@ class Dashboard extends Component {
 						<ProfileActions />
 						<Experience experience={profile.experience} />
 						<Education education={profile.education} />
-						{/* TODO: exp and edu */}
 						<div style={{ marginBottom: '60px' }} />
 						<button className="btn btn-danger" onClick={this.onDeleteClick}>
 							Delete My Account
