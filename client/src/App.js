@@ -17,6 +17,7 @@ import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
 import NotFound from './components/not-found/NotFound';
+import Posts from './components/posts/Posts';
 import Profile from './components/profile/Profile';
 import Profiles from './components/profiles/Profiles';
 import store from './store';
@@ -102,6 +103,14 @@ class App extends Component {
 									component={AddEducation}
 									exact
 									path="/add-education"
+									redirectTo="/login"
+								/>
+							</Switch>
+							<Switch>
+								<PrivateRoute
+									component={Posts}
+									exact
+									path="/feed"
 									redirectTo="/login"
 								/>
 							</Switch>
