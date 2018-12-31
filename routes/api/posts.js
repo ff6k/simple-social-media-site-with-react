@@ -31,8 +31,8 @@ router.get('/:id', (req, res) => {
 		.then(post => {
 			if (!post) {
 				return sender(res, 404, {
-					posts: 'Post not found for that ID',
-					postId: req.params.id
+					postId: req.params.id,
+					posts: 'Post not found for that ID'
 				});
 			}
 
@@ -40,8 +40,8 @@ router.get('/:id', (req, res) => {
 		})
 		.catch(err =>
 			sender(res, 404, {
-				posts: 'Post not found for that ID',
-				postId: req.params.id
+				postId: req.params.id,
+				posts: 'Post not found for that ID'
 			})
 		);
 });
@@ -51,16 +51,17 @@ router.get('/:id', (req, res) => {
 // @access  Private
 router.post('/', requireLogin, (req, res) => {
 	const { errors, isValid } = ValidatePostInput(req.body);
+	const { avatar, id, name } = req.user;
 
 	if (!isValid) {
 		return sender(res, 400, errors);
 	}
 
 	const newPost = new Post({
+		avatar,
+		name,
 		text: req.body.text,
-		name: req.user.name,
-		avatar: req.user.avatar,
-		user: req.user.id
+		user: id
 	});
 
 	newPost.save().then(post => res.json(post));
@@ -83,16 +84,16 @@ router.delete('/:id', requireLogin, (req, res) => {
 					res.json({
 						message: 'Successfully deleted post.',
 						name: req.user.name,
-						userId: req.user.id,
-						postId: post.id
+						postId: post.id,
+						userId: req.user.id
 					});
 				})
 				.catch(err => {
 					sender(res, 404, {
 						message: 'The post was not found to delete.',
 						name: req.user.name,
-						userId: req.user.id,
-						postId: req.params.id
+						postId: req.params.id,
+						userId: req.user.id
 					});
 				});
 		})
@@ -100,8 +101,8 @@ router.delete('/:id', requireLogin, (req, res) => {
 			sender(res, 404, {
 				message: 'The post was not found to delete.',
 				name: req.user.name,
-				userId: req.user.id,
-				postId: req.params.id
+				postId: req.params.id,
+				userId: req.user.id
 			})
 		);
 });
@@ -125,11 +126,11 @@ router.post('/like/:id', requireLogin, (req, res) => {
 		})
 		.catch(err =>
 			sender(res, 404, {
+				error: err,
 				message: 'The post was not found to like.',
 				name: req.user.name,
-				userId: req.user.id,
 				postId: req.params.id,
-				error: err
+				userId: req.user.id
 			})
 		);
 	//});
@@ -163,11 +164,11 @@ router.post('/unlike/:id', requireLogin, (req, res) => {
 		})
 		.catch(err =>
 			sender(res, 404, {
+				err,
 				message: 'The post was not found to unlike.',
 				name: req.user.name,
-				userId: req.user.id,
 				postId: req.params.id,
-				err
+				userId: req.user.id
 			})
 		);
 	//});
@@ -186,9 +187,9 @@ router.post('/comment/:id', requireLogin, (req, res) => {
 	Post.findById(req.params.id)
 		.then(post => {
 			const newComment = {
-				text: req.body.text,
-				name: req.user.name,
 				avatar: req.user.avatar,
+				name: req.user.name,
+				text: req.body.text,
 				user: req.user.id
 			};
 			post.comments.unshift(newComment);
@@ -199,8 +200,8 @@ router.post('/comment/:id', requireLogin, (req, res) => {
 			sender(res, 404, {
 				message: 'The post was not found to comment on.',
 				name: req.user.name,
-				userId: req.user.id,
-				postId: req.params.id
+				postId: req.params.id,
+				userId: req.user.id
 			})
 		);
 });
@@ -217,11 +218,11 @@ router.delete('/:id/comment/:comment_id', requireLogin, (req, res) => {
 				).length === 0
 			) {
 				return sender(res, 404, {
+					commentId: req.params.comment_id,
 					error: 'Comment does not exist',
 					name: req.user.name,
-					userId: req.user.id,
 					postId: req.params.id,
-					commentId: req.params.comment_id
+					userId: req.user.id
 				});
 			}
 
@@ -239,11 +240,11 @@ router.delete('/:id/comment/:comment_id', requireLogin, (req, res) => {
 		})
 		.catch(err =>
 			sender(res, 404, {
+				commentId: req.params.comment_id,
 				message: 'The post was not found.',
 				name: req.user.name,
-				userId: req.user.id,
 				postId: req.params.id,
-				commentId: req.params.comment_id
+				userId: req.user.id
 			})
 		);
 });
