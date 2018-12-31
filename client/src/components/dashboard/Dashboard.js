@@ -27,38 +27,34 @@ class Dashboard extends Component {
 
 		let dashboardContent;
 
-		if (CoreValidation.isEmpty(profile) || loading) {
+		if (CoreValidation.isEmpty(profile) && loading) {
 			dashboardContent = <Spinner />;
+		} else if (CoreValidation.isEmpty(profile) && !loading) {
+			//user is logged in, but does not have profile
+			dashboardContent = (
+				<div>
+					<p className="lead text-muted">Welcome, {user.name}!</p>
+					<p>You have not yet setup a profile, please add some info.</p>
+					<Link className="btn btn-lg btn-info" to="/create-profile">
+						Create Profile
+					</Link>
+				</div>
+			);
 		} else {
-			//check if logged in user has profile
-			if (!CoreValidation.isEmpty(profile)) {
-				dashboardContent = (
-					<div>
-						<p className="lead text-muted">
-							Welcome,{' '}
-							<Link to={`/profile/${profile.handle}`}>{user.name}</Link>!
-						</p>
-						<ProfileActions />
-						<Experience experience={profile.experience} />
-						<Education education={profile.education} />
-						<div style={{ marginBottom: '60px' }} />
-						<button className="btn btn-danger" onClick={this.onDeleteClick}>
-							Delete My Account
-						</button>
-					</div>
-				);
-			} else {
-				//user is logged in, but does not have profile
-				dashboardContent = (
-					<div>
-						<p className="lead text-muted">Welcome, {user.name}!</p>
-						<p>You have not yet setup a profile, please add some info.</p>
-						<Link className="btn btn-lg btn-info" to="/create-profile">
-							Create Profile
-						</Link>
-					</div>
-				);
-			}
+			dashboardContent = (
+				<div>
+					<p className="lead text-muted">
+						Welcome, <Link to={`/profile/${profile.handle}`}>{user.name}</Link>!
+					</p>
+					<ProfileActions />
+					<Experience experience={profile.experience} />
+					<Education education={profile.education} />
+					<div style={{ marginBottom: '60px' }} />
+					<button className="btn btn-danger" onClick={this.onDeleteClick}>
+						Delete My Account
+					</button>
+				</div>
+			);
 		}
 
 		return (
