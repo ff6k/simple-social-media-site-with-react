@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
 	ADD_POST,
 	CLEAR_ERRORS,
+	DELETE_POST,
 	GET_ERRORS,
 	GET_POSTS,
 	POST_LOADING
@@ -33,6 +34,40 @@ export const getPosts = () => dispatch => {
 		.get('/api/posts')
 		.then(res => dispatch({ payload: res.data, type: GET_POSTS }))
 		.catch(err => dispatch({ payload: null, type: GET_POSTS }));
+};
+
+// Delete Post
+export const deletePost = id => dispatch => {
+	axios
+		.delete(`/api/posts/${id}`)
+		.then(res =>
+			dispatch({
+				payload: id,
+				type: DELETE_POST
+			})
+		)
+		.catch(err =>
+			dispatch({
+				payload: err.response,
+				type: GET_ERRORS
+			})
+		);
+};
+
+// Add Like
+export const addLike = id => dispatch => {
+	axios
+		.post(`/api/posts/like/${id}`)
+		.then(res => dispatch(getPosts()))
+		.catch(err => dispatch({ payload: err.response, type: GET_ERRORS }));
+};
+
+// Remove Like
+export const removeLike = id => dispatch => {
+	axios
+		.post(`/api/posts/unlike/${id}`)
+		.then(res => dispatch(getPosts()))
+		.catch(err => dispatch({ payload: err.response, type: GET_ERRORS }));
 };
 
 // Set loading state
