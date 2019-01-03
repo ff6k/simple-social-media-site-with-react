@@ -5,74 +5,38 @@ import { addPost } from '../../actions/postActions';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 
 class PostForm extends Component {
-	// state = {
-	// 	errors: {},
-	// 	text: ''
-	// };
+	state = {
+		errors: {},
+		text: ''
+	};
 
-	// updateState = (key, value) =>
-	// 	this.setState((prevState, props) => (prevState[key] = value));
+	updateState = (key, value) =>
+		this.setState((prevState, props) => (prevState[key] = value));
 
-	// onChange = ({ target }) => this.updateState(target.name, target.value);
+	onChange = ({ target }) => this.updateState(target.name, target.value);
 
-	// onSubmit = e => {
-	// 	e.preventDefault();
-
-	// 	const { text } = this.state;
-	// 	const { avatar, name } = this.props.auth.user;
-
-	// 	const newPost = {
-	// 		avatar,
-	// 		name,
-	// 		text
-	// 	};
-
-	// 	this.props.addPost(newPost);
-	// 	this.updateState('text', '');
-	// };
-
-	// componentDidUpdate(prevProps, prevState) {
-	// 	const { errors } = this.props;
-
-	// 	if (prevProps.errors !== errors) {
-	// 		this.setState({ errors });
-	// 	}
-	// }
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			errors: {},
-			text: ''
-		};
-
-		this.onChange = this.onChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-	}
-
-	componentWillReceiveProps(newProps) {
-		if (newProps.errors) {
-			this.setState({ errors: newProps.errors });
-		}
-	}
-
-	onSubmit(e) {
+	onSubmit = e => {
 		e.preventDefault();
 
-		const { user } = this.props.auth;
+		const { text } = this.state;
+		const { avatar, name } = this.props.auth.user;
 
 		const newPost = {
-			avatar: user.avatar,
-			name: user.name,
-			text: this.state.text
+			avatar,
+			name,
+			text
 		};
 
 		this.props.addPost(newPost);
-		this.setState({ text: '' });
-	}
+		this.updateState('text', '');
+	};
 
-	onChange(e) {
-		this.setState({ [e.target.name]: e.target.value });
+	componentDidUpdate(prevProps, prevState) {
+		const { errors } = this.props;
+
+		if (prevProps.errors !== errors) {
+			this.setState({ errors });
+		}
 	}
 
 	render() {
