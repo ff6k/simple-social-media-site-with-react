@@ -17,6 +17,7 @@ import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
 import NotFound from './components/not-found/NotFound';
+import Post from './components/post/Post';
 import Posts from './components/posts/Posts';
 import Profile from './components/profile/Profile';
 import Profiles from './components/profiles/Profiles';
@@ -111,6 +112,14 @@ class App extends Component {
 									component={Posts}
 									exact
 									path="/feed"
+									redirectTo="/login"
+								/>
+							</Switch>
+							<Switch>
+								<PrivateRoute
+									component={Post}
+									exact
+									path="/post/:id"
 									redirectTo="/login"
 								/>
 							</Switch>
