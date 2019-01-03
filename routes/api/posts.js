@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 		.catch(err => sender(res, 404, { posts: 'No posts found' }));
 });
 
-// @route   GET api/post/:id
+// @route   GET api/posts/:id
 // @desc    Get post by id
 // @access  Public
 router.get('/:id', (req, res) => {
@@ -35,7 +35,6 @@ router.get('/:id', (req, res) => {
 					posts: 'Post not found for that ID'
 				});
 			}
-
 			res.json(post);
 		})
 		.catch(err =>
