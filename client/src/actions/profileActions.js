@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
 	CLEAR_CURRENT_PROFILE,
+	CLEAR_ERRORS,
 	GET_ERRORS,
 	GET_PROFILE,
 	GET_PROFILES,
@@ -10,6 +11,7 @@ import {
 
 //get current profile
 export const getCurrentProfile = () => dispatch => {
+	dispatch(clearErrors());
 	dispatch(setProfileLoading());
 	axios
 		.get('/api/profile')
@@ -29,6 +31,7 @@ export const getCurrentProfile = () => dispatch => {
 
 // Get profile by handle
 export const getProfileByHandle = handle => dispatch => {
+	dispatch(clearErrors());
 	dispatch(setProfileLoading());
 	axios
 		.get(`/api/profile/handle/${handle}`)
@@ -48,6 +51,7 @@ export const getProfileByHandle = handle => dispatch => {
 
 //get profiles
 export const getProfiles = () => dispatch => {
+	dispatch(clearErrors());
 	dispatch(setProfileLoading());
 	axios
 		.get('/api/profile/all')
@@ -67,6 +71,7 @@ export const getProfiles = () => dispatch => {
 
 //create profile
 export const createProfile = (profileData, history) => dispatch => {
+	dispatch(clearErrors());
 	axios
 		.post('/api/profile', profileData)
 		.then(res => history.push('/dashboard'))
@@ -80,6 +85,7 @@ export const createProfile = (profileData, history) => dispatch => {
 
 //edit profile
 export const editProfile = (profileData, history) => dispatch => {
+	dispatch(clearErrors());
 	axios
 		.post('/api/profile', profileData)
 		.then(res => history.push('/dashboard'))
@@ -93,6 +99,7 @@ export const editProfile = (profileData, history) => dispatch => {
 
 //add experience
 export const addExperience = (expData, history) => dispatch => {
+	dispatch(clearErrors());
 	axios
 		.post('/api/profile/experience', expData)
 		.then(res => history.push('/dashboard'))
@@ -106,6 +113,7 @@ export const addExperience = (expData, history) => dispatch => {
 
 //add education
 export const addEducation = (eduData, history) => dispatch => {
+	dispatch(clearErrors());
 	axios
 		.post('/api/profile/education', eduData)
 		.then(res => history.push('/dashboard'))
@@ -120,6 +128,7 @@ export const addEducation = (eduData, history) => dispatch => {
 //delete education
 export const deleteEducation = id => dispatch => {
 	if (window.confirm('Are you sure? This cannot be undone!')) {
+		dispatch(clearErrors());
 		axios
 			.delete(`/api/profile/education/${id}`)
 			.then(res => dispatch({ payload: res.data, type: GET_PROFILE }))
@@ -135,6 +144,7 @@ export const deleteEducation = id => dispatch => {
 //delete experience
 export const deleteExperience = id => dispatch => {
 	if (window.confirm('Are you sure? This cannot be undone!')) {
+		dispatch(clearErrors());
 		axios
 			.delete(`/api/profile/experience/${id}`)
 			.then(res =>
@@ -155,6 +165,7 @@ export const deleteExperience = id => dispatch => {
 //delete account and profile
 export const deleteAccount = () => dispatch => {
 	if (window.confirm('Are you sure? This cannot be undone!')) {
+		dispatch(clearErrors());
 		axios
 			.delete('/api/profile')
 			.then(res =>
@@ -183,5 +194,12 @@ export const setProfileLoading = () => {
 export const clearCurrentProfile = () => {
 	return {
 		type: CLEAR_CURRENT_PROFILE
+	};
+};
+
+// Clear errors
+export const clearErrors = () => {
+	return {
+		type: CLEAR_ERRORS
 	};
 };

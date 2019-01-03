@@ -17,7 +17,6 @@ class CommentForm extends Component {
 
 	onSubmit = e => {
 		e.preventDefault();
-
 		const { text } = this.state;
 		const { avatar, name } = this.props.auth.user;
 		const { postId } = this.props;
