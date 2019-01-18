@@ -4,6 +4,8 @@ This developer social media site is a demo app created and taught by Brad Traver
 
 > Small social network app built with the MERN stack.
 
+### This MERN course is not my code. I just rebuilt it.
+
 ## Quick Start
 
 ```bash
