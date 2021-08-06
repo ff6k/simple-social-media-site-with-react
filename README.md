@@ -36,10 +36,3 @@ module.exports = {
 };
 ```
 
-## App Info
-
-### License
-
-This project is licensed under the MIT License
-
-![alt text](UC-0SQHDM4T.jpg "MERN Course Certificate")
